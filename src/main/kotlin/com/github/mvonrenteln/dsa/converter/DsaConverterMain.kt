@@ -11,7 +11,7 @@ fun main(args: Array<String>) {
         if (args.isEmpty()) {
             println(parameterDescription)
             println("Gebe Beispiel-Datei aus.")
-            val inputFileName = "DSA-Abenteuer_G7_clean.json"
+            val inputFileName = "example.yaml"
             val input = ClassLoader.getSystemClassLoader().getResourceAsStream(inputFileName)
             convert(inputFileName, input, File("out"))
         } else {
@@ -22,6 +22,8 @@ fun main(args: Array<String>) {
         }
     }
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
+    println("ENTER drücken zum Beenden.")
+    readLine()
 
 }
 
