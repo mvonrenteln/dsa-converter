@@ -1,0 +1,45 @@
+gruppe: G7
+mitglieder:
+- name: Durrandir
+  profession: Steppenelfischer Meisterschütze und ausdauernder Jäger
+- name: Glymbar Sohn des Gildrosch
+  profession: Ambosszwergischer Waffenschmied und unüberwindbares Bollwerk
+- name: Oswin Firnske
+  profession: Bornischer Magier und überzeugter Pazifist
+- name: Sherkan Narbengesicht
+  profession: Maraskanischer Klingentänzer und unverbesserlicher Optimist
+titel: Die Abenteuer der sieben Gezeichneten
+verfasser: Unbekannter Verfasser
+einleitung: |-
+  HEIMLICH UND VERBORGEN ERHOB SICH AUS DEN SCHATTEN EIN GROSSES UNHEIL,
+  WELCHES NACH ALLEM ZU GIEREN BEGANN, WAS SEINE LANGGLIEDRIGE KLAUE IRGENDWIE ZU PACKEN BEKAM: SEELEN, DÄMONENKRAFT UND SOGAR GESAMTE KÖNIGREICHE.
+  NUR WENIGE SAHEN RECHTZEITIG JENE DUNKELHEIT AUFZIEHEN, WELCHE SICH GLEICH EINER ERSTICKENDEN WOLKE NACH UND NACH ÜBER GANZ AVENTURIEN LEGEN SOLLTE.
+  DIES SIND DIE TATEN JENER HELDEN, WELCHE VIEL SPÄTER _DIE GEZEICHNETEN_ GENANNT WERDEN WÜRDEN. +
+  HÖRE STAUNEND UND LERNE VON IHNEN.
+abende:
+- abenteuer: Des Greifen Leid
+  abschnitte:
+  - ausrüstung:
+    - ...
+    datum: xx. EFF 1018 BF (...tag)
+    gruppen:
+    - ...
+    kapitel: ...
+    ort: ...
+    personen:
+    - ...
+    # ein Kommentar
+    text: >
+      Die Gefährten standen von jetzt auf gleich mitten im Kampfgeschehen. Durrandir tat das, was Elfen in solchen Momenten am häufigsten tun: Er verschwand einfach - und das im wahrsten Sinne des Wortes. Das Ganze inklusive all seiner Ausrüstung. Anschließend duckte er sich rasch weg und ließ zugleich die Sprungkraft einer Kröte in seine Glieder fahren. Nun war er kaum mehr auszumachen, denn der Elf konnte sich trotz der offenen Fläche und des verräterischen sandigen Untergrunds völlig unvorhersehbar bewegen.
+
+      Sherkan dagegen erinnerte sich jäh daran, dass diese Art des Empfangs an den Küsten Maraskans gar nicht so unüblich war. Viele Buchten waren von niedrigen Tunneln oder verdeckten Gräben durchzogen, mit derer Hilfe  wenige Verteidiger ganze Armeen aufhalten konnten. Üblicherweise waren die Systeme am jeweiligen Strand komplett miteinander verbunden - und das würde er sich nun zunutze machen. Außerdem hatte er nichts mehr zu verlieren: Das Gift von zwei Treffern war schon in seinen Adern, eine weitere Dosis dieser Größenordnung würde ihm komplett die Kontrolle über seinen Körper rauben. Also hastete er zum nächsten getarnten Deckel, hebelte ihn mit seinem Tuzakmesser auf und wich währenddessen einem weiteren Geschoss aus, wobei ein zweites leider erneut seinen Hals fand. Es piekte leicht und die Muskeln folgten seinen Befehlen nun grenzwertig langsam, gleichzeitig begann sich die Welt vor seinen Augen zu drehen. Doch er wäre nicht Sherkan, wenn ihn das aufgehalten hätte. Von unten sah er einen völlig überrumpelten Mann mit schreckgeweitetem Blick zu ihm hochschauen. Dummerweise hatte der Kerl sein Blasrohr schon angesetzt, glücklicherweise verfehlte er aber selbst aus kürzester Distanz sein eigentlich leichtes Ziel. Ob da Phex wieder seine Finger im Spiel gehabt hatte? Jedenfalls stürzte Sherkan taumelnd auf den maraskanischen Schützen hinab und verpasste diesem einen unglaublich gut platzierten Betäubungsschlag. Der Mann ächzte und sank benommen auf alle Viere. Da zog der Klingentänzer drei Bolzen aus dem Munitionsgürtel seines Gegners und trieb ihm die vergifteten Projektilspitzen in den Oberarm. Umgehend sackte der Getroffene in sich zusammen und blieb reglos liegen.
+    zusammenfassung: ...
+  aps:
+  - aps: 2
+    beschreibung: Charakterreife
+  - aps: 8
+    beschreibung: -< 30.05.2018 >-
+  datum: 30.05.2018
+  kampagne: Die Sieben Gezeichneten
+  spieldauer: 2
+  titel: -< 30.05.2018 >-
