@@ -1,30 +1,29 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.File
+import java.io.FileOutputStream
 import java.io.Writer
 
-class AdocFileWriter(adocFile: File) {
+class AdocFileWriter(val adocFile: File) {
 
     val BR = "\r\n"
     val LEERZEILE = "$BR$BR"
-
-    val writer: Writer
 
     var aktuellesAbenteuer = ""
 
     var aktuellesDatum: String? = null
 
     init {
-        this.writer = adocFile.bufferedWriter()
+        adocFile.delete()
     }
 
     fun writeData(gruppenDaten: GruppenDaten) {
-        writer.use {
-            writeDataInternal(gruppenDaten)
+        FileOutputStream(adocFile, true).writer().buffered().use {
+            writeDataInternal(gruppenDaten, it)
         }
     }
 
-    private fun writeDataInternal(gruppenDaten: GruppenDaten) {
+    private fun writeDataInternal(gruppenDaten: GruppenDaten, writer: Writer) {
         writer.append("= ${gruppenDaten.titel} (${gruppenDaten.gruppe})$BR${gruppenDaten.verfasser}$BR:toc:$LEERZEILE")
         writer.append(gruppenDaten.einleitung + LEERZEILE)
 
@@ -32,10 +31,10 @@ class AdocFileWriter(adocFile: File) {
 
             if (aktuellesAbenteuer != abend.abenteuer) {
                 aktuellesAbenteuer = abend.abenteuer
-                schreibeAbenteuerName()
+                schreibeAbenteuerName(writer)
             }
 
-            schreibeTitel(abend.titel)
+            schreibeTitel(abend.titel, writer)
 
             if (abend.zitat != null) {
                 writer.append(abend.zitat + LEERZEILE)
@@ -44,8 +43,8 @@ class AdocFileWriter(adocFile: File) {
             abend.abschnitte.forEach { abschnitt ->
                 if (abschnitt.abenteuer != null && aktuellesAbenteuer != abschnitt.abenteuer) {
                     aktuellesAbenteuer = abschnitt.abenteuer
-                    schreibeAbenteuerName()
-                    schreibeTitel(abend.titel)
+                    schreibeAbenteuerName(writer)
+                    schreibeTitel(abend.titel, writer)
                 }
                 if (aktuellesDatum != abschnitt.datum) {
                     aktuellesDatum = abschnitt.datum
@@ -57,11 +56,11 @@ class AdocFileWriter(adocFile: File) {
         }
     }
 
-    private fun schreibeTitel(titel: String) {
+    private fun schreibeTitel(titel: String, writer: Writer) {
         writer.append("=== $titel$LEERZEILE")
     }
 
-    private fun schreibeAbenteuerName() {
+    private fun schreibeAbenteuerName(writer: Writer) {
         writer.append("== $aktuellesAbenteuer$LEERZEILE")
     }
 }
