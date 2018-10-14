@@ -1,15 +1,35 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.File
+import java.io.InputStream
+
+val parameterDescription = "Parameter: 1. Name der Eingabe-Datei, 2. Ausgabe-Verzeichnis (Optional, Default: 'out')"
 
 fun main(args: Array<String>) {
-    val input = File(ClassLoader.getSystemClassLoader().getResource("DSA-Abenteuer_G7_clean.json").toURI())
-    val adocFile = File("out", input.name.substring(0..input.name.length-6) + ".adoc")
-    val data = loadJsonFile(input)
+    if (args.isEmpty()) {
+        println(parameterDescription)
+        println("Gebe Beispiel-Datei aus.")
+        val inputFileName = "example.yaml"
+        val input = ClassLoader.getSystemClassLoader().getResourceAsStream(inputFileName)
+        convert(inputFileName, input, File("out"))
+    } else {
+        val inputFileName = args[0]
+        val input = File(inputFileName).inputStream()
+        val outputDir = if (args.size > 1) args[1] else "out"
+        convert(inputFileName, input, File(outputDir))
+    }
+
+}
+
+fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
+    val adocFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
+    val data = loadDataFile(inputStream, inputFileName)
 
     AdocFileWriter(adocFile).writeData(data)
     writeAsciidocFile(adocFile)
 }
+
+
 
 
 

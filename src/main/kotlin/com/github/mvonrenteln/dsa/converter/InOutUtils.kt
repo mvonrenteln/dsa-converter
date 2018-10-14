@@ -5,7 +5,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
-import java.net.URL
+import java.io.InputStream
 
 val yamlFactory = YAMLFactory()
     .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES) //removes quotes from strings
@@ -17,18 +17,29 @@ val yamlMapper = ObjectMapper(yamlFactory).registerKotlinModule()
 
 val jsonMapper = ObjectMapper().registerKotlinModule()
 
-fun convertJsonToYaml() {
-    val data =
-        loadJsonFile(File(ClassLoader.getSystemClassLoader().getResource("DSA-Abenteuer_G7_clean.json").toURI()))
-    writeYamlFile(data)
+
+fun loadDataFile(inputStream: InputStream, inputFileName: String): GruppenDaten {
+    return if (inputFileName.toLowerCase().endsWith("yaml")) {
+        loadYamlFile(inputStream)
+    } else if (inputFileName.toLowerCase().endsWith("json")) {
+        loadJsonFile(inputStream)
+    } else {
+        throw IllegalArgumentException("Nur YAML oder JSON als Daten sind erlaubt!")
+    }
 }
 
-fun loadJsonFile(path: File): GruppenDaten {
+fun loadJsonFile(path: InputStream): GruppenDaten {
     return jsonMapper.readValue(path, GruppenDaten::class.java)
 }
 
-fun loadYamlFile(path: URL): GruppenDaten {
+fun loadYamlFile(path: InputStream): GruppenDaten {
     return yamlMapper.readValue(path, GruppenDaten::class.java)
+}
+
+
+fun convertJsonToYaml() {
+    val data = loadJsonFile(ClassLoader.getSystemClassLoader().getResourceAsStream("DSA-Abenteuer_G7_clean.json"))
+    writeYamlFile(data)
 }
 
 fun writeYamlFile(data: GruppenDaten) {
