@@ -29,9 +29,7 @@ fun main(args: Array<String>) {
 
 fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
     val adocFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
-    val data = printMeasuredTimeAndReturnResult("Eingabe-Daten gelesen in %d ms.") {
-        loadDataFile(inputStream, inputFileName)
-    }
+    val data = loadDataFile(inputStream, inputFileName)
 
     AdocFileWriter(adocFile).writeData(data)
     ASCIIDOCTOR.convertFile(adocFile)

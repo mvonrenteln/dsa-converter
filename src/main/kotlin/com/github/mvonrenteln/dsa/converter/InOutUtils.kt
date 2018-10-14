@@ -19,12 +19,14 @@ val jsonMapper = ObjectMapper().registerKotlinModule()
 
 
 fun loadDataFile(inputStream: InputStream, inputFileName: String): GruppenDaten {
-    return if (inputFileName.toLowerCase().endsWith("yaml")) {
-        loadYamlFile(inputStream)
-    } else if (inputFileName.toLowerCase().endsWith("json")) {
-        loadJsonFile(inputStream)
-    } else {
-        throw IllegalArgumentException("Nur YAML oder JSON als Daten sind erlaubt!")
+    return printMeasuredTimeAndReturnResult("Eingabe-Datei $inputFileName gelesen in %d ms.") {
+        if (inputFileName.toLowerCase().endsWith("yaml")) {
+            loadYamlFile(inputStream)
+        } else if (inputFileName.toLowerCase().endsWith("json")) {
+            loadJsonFile(inputStream)
+        } else {
+            throw IllegalArgumentException("Nur YAML oder JSON als Daten sind erlaubt!")
+        }
     }
 }
 
