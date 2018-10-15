@@ -1,6 +1,7 @@
 package com.github.mvonrenteln.dsa.converter.legacy
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.github.mvonrenteln.dsa.converter.AP
 
 data class LegacyGruppenDaten(
     val gruppe: String,
@@ -19,5 +20,4 @@ data class LegacyAbend(
     val text: String
 )
 
-data class AP(val aps: Int, val beschreibung: String)
 
