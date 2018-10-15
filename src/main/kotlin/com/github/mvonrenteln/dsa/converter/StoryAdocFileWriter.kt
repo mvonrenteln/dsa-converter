@@ -1,33 +1,16 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.File
-import java.io.FileOutputStream
 import java.io.Writer
-import kotlin.system.measureTimeMillis
 
-class StoryAdocFileWriter(val adocFile: File) {
-
-    val BR = "\r\n"
-    val LEERZEILE = "$BR$BR"
+class StoryAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
     private var aktuellesAbenteuer = ""
 
     private var aktuellesDatum: String? = null
 
-    init {
-        adocFile.delete()
-    }
 
-    fun writeData(gruppenDaten: GruppenDaten) {
-        val time = measureTimeMillis {
-            FileOutputStream(adocFile, true).writer().buffered().use {
-                writeDataInternal(gruppenDaten, it)
-            }
-        }
-        println("In ADOC file geschrieben in $time ms.")
-    }
-
-    private fun writeDataInternal(gruppenDaten: GruppenDaten, writer: Writer) {
+    override fun writeDataInternal(gruppenDaten: GruppenDaten, writer: Writer) {
         writer.append("= ${gruppenDaten.titel} (${gruppenDaten.gruppe})$BR${gruppenDaten.verfasser}$BR:toc:$LEERZEILE")
         writer.append(gruppenDaten.einleitung + LEERZEILE)
 
