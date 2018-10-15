@@ -18,32 +18,26 @@ val yamlMapper = ObjectMapper(yamlFactory).registerKotlinModule()
 val jsonMapper = ObjectMapper().registerKotlinModule()
 
 
-fun loadDataFile(inputStream: InputStream, inputFileName: String): GruppenDaten {
+inline fun <reified T> loadDataFile(inputStream: InputStream, inputFileName: String): T {
     return printMeasuredTimeAndReturnResult("Eingabe-Datei $inputFileName gelesen in %d ms.") {
         if (inputFileName.toLowerCase().endsWith("yaml")) {
             loadYamlFile(inputStream)
         } else if (inputFileName.toLowerCase().endsWith("json")) {
-            loadJsonFile(inputStream)
+            loadJsonFile<T>(inputStream)
         } else {
             throw IllegalArgumentException("Nur YAML oder JSON als Daten sind erlaubt!")
         }
     }
 }
 
-fun loadJsonFile(path: InputStream): GruppenDaten {
-    return jsonMapper.readValue(path, GruppenDaten::class.java)
+inline fun <reified T> loadJsonFile(path: InputStream): T {
+    return jsonMapper.readValue(path, T::class.java)
 }
 
-fun loadYamlFile(path: InputStream): GruppenDaten {
-    return yamlMapper.readValue(path, GruppenDaten::class.java)
+inline fun <reified T> loadYamlFile(path: InputStream): T {
+    return yamlMapper.readValue(path, T::class.java)
 }
 
-
-fun convertJsonToYaml() {
-    val data = loadJsonFile(ClassLoader.getSystemClassLoader().getResourceAsStream("DSA-Abenteuer_G7_clean.json"))
-    writeYamlFile(data)
-}
-
-fun writeYamlFile(data: GruppenDaten) {
-    yamlMapper.writerWithDefaultPrettyPrinter().writeValue(File("out/DSA-Abenteuer_G7_clean.yaml"), data)
+fun writeYamlFile(data: Any, file: File) {
+    yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, data)
 }
