@@ -12,11 +12,9 @@ val ASCIIDOCTOR by lazy {
     }
 }
 
-val OPTIONS by lazy {
-    Options().apply {
-        this.setInPlace(true)
-        this.setSafe(SafeMode.UNSAFE)
-    }
+val OPTIONS = Options().apply {
+    this.setInPlace(true)
+    this.setSafe(SafeMode.UNSAFE)
 }
 
 fun Asciidoctor.convertFile(adocFile: File) {
