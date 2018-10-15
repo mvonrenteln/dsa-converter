@@ -31,7 +31,7 @@ fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
     val adocFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
     val data = loadDataFile(inputStream, inputFileName)
 
-    AdocFileWriter(adocFile).writeData(data)
+    StoryAdocFileWriter(adocFile).writeData(data)
     ASCIIDOCTOR.convertFile(adocFile)
 }
 

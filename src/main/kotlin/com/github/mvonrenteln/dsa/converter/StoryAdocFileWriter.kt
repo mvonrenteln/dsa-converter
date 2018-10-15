@@ -5,14 +5,14 @@ import java.io.FileOutputStream
 import java.io.Writer
 import kotlin.system.measureTimeMillis
 
-class AdocFileWriter(val adocFile: File) {
+class StoryAdocFileWriter(val adocFile: File) {
 
     val BR = "\r\n"
     val LEERZEILE = "$BR$BR"
 
-    var aktuellesAbenteuer = ""
+    private var aktuellesAbenteuer = ""
 
-    var aktuellesDatum: String? = null
+    private var aktuellesDatum: String? = null
 
     init {
         adocFile.delete()
