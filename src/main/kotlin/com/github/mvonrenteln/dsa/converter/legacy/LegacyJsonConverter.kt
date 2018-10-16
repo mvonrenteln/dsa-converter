@@ -15,9 +15,6 @@ fun main(args: Array<String>) {
         convert(inputFileName, input, File(outputDir))
     }
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
-    println("ENTER drücken zum Beenden.")
-    readLine()
-
 }
 
 fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
