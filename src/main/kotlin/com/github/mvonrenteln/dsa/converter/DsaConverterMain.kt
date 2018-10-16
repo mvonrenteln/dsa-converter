@@ -27,7 +27,7 @@ fun main(args: Array<String>) {
 
 }
 
-fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
+private fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
     val adocFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
     val data = loadDataFile<GruppenDaten>(inputStream, inputFileName)
 

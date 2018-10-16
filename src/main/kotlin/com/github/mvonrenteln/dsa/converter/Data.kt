@@ -35,9 +35,8 @@ data class Abschnitt(
     val personen: List<String>? = null,
     val text: String,
     val zusammenfassung: String? = null,
-    val boni: List<Effekt>? = null,
-    val mali: List<Effekt>? = null
+    val effekte: List<Effekt>? = null
 )
 
-data class Effekt(val auswirkung: String, val held: String, val dauer: String)
+data class Effekt(val auswirkung: String, val held: String, val wirktBis: String)
 

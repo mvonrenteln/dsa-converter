@@ -17,7 +17,7 @@ fun main(args: Array<String>) {
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
 }
 
-fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
+private fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
     val altDaten = loadDataFile<LegacyGruppenDaten>(inputStream, inputFileName)
 
     val neueDaten = GruppenDaten(gruppe = altDaten.gruppe, abende = altDaten.abende.map {
