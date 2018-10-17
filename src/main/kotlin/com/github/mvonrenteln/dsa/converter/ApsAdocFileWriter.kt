@@ -6,7 +6,8 @@ class ApsAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
     override fun writeDataInternal(gruppenDaten: GruppenDaten) {
         val erlebnisse = berechneAps(gruppenDaten)
-        writer.append("= APs der ${erlebnisse.name}$BR:toc:$LEERZEILE")
+        h1("APs der ${erlebnisse.name}")
+        inhaltsverzeichnis()
         zusammenfassung(erlebnisse)
         erlebnisse.abenteuer.forEach { neuesAbenteuer(it) }
     }
@@ -52,24 +53,24 @@ class ApsAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
 
     private fun abschnittBeginnen(ueberschrift: String, tabellenTitel: String) {
-        writer.append("== " + ueberschrift + LEERZEILE)
-        writer.append(TABLE_DELIMITER + "|$tabellenTitel|APs|davon Charakterreife|Spieldauer$LEERZEILE")
+        h2(ueberschrift)
+        zeile(TABLE_DELIMITER + "|$tabellenTitel|APs|davon Charakterreife|Spieldauer")
     }
 
 
     private fun neuerAbend(abend: AbendAps) {
-        writer.append("""|+++<p class="tableblock" title="${abend.zusammenfassung}">${abend.titel}</p>+++|${abend.aps}|${abend.charakterreife}|${abend.spieldauer} Stunden$BR""")
+        zeile("""|+++<p class="tableblock" title="${abend.zusammenfassung}">${abend.titel}</p>+++|${abend.aps}|${abend.charakterreife}|${abend.spieldauer} Stunden""")
     }
 
 
     private fun abschnittAbschliessen(abenteuer: Abenteuer) {
-        writer.append(
+        zeile(
             """|*Durchschnitt*|*${abenteuer.apsDurchschnitt()}${apsDurchschnittBeiDurchschnittlicherSpieldauer(abenteuer)}*
                      |*${abenteuer.characterreifeDurchschnitt()}*
-                     |*${abenteuer.spieldauerDurchschnitt()} Stunden*$BR"""
+                     |*${abenteuer.spieldauerDurchschnitt()} Stunden*"""
         )
-        writer.append("|*Gesamt*|*${abenteuer.aps}*|*${abenteuer.charakterreife}*|*${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)*$BR")
-        writer.append(TABLE_DELIMITER + BR)
+        zeile("|*Gesamt*|*${abenteuer.aps}*|*${abenteuer.charakterreife}*|*${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)*")
+        zeile(TABLE_DELIMITER)
     }
 
 

@@ -8,7 +8,7 @@ import kotlin.system.measureTimeMillis
 
 abstract class AdocFileWriter(val adocFile: File) {
 
-    protected var writer: Writer by notNull()
+    private var writer: Writer by notNull()
 
     init {
         adocFile.delete()
@@ -24,7 +24,7 @@ abstract class AdocFileWriter(val adocFile: File) {
         println("In ADOC file geschrieben in $time ms.")
     }
 
-    protected abstract fun writeDataInternal(daten: GruppenDaten)
+    protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)
 
     protected fun h1(titel: String) {
         writer.append("= $titel$BR")
