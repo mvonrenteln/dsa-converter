@@ -10,43 +10,37 @@ class StoryAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
 
     override fun writeDataInternal(gruppenDaten: GruppenDaten) {
-        writer.append("= ${gruppenDaten.titel} (${gruppenDaten.gruppe})$BR${gruppenDaten.verfasser}$BR:toc:$LEERZEILE")
-        writer.append(gruppenDaten.einleitung + LEERZEILE)
+        h1("${gruppenDaten.titel} (${gruppenDaten.gruppe})")
+        zeile(gruppenDaten.verfasser)
+        inhaltsverzeichnis()
+
+        textblock(gruppenDaten.einleitung)
 
         gruppenDaten.abende.forEach { abend ->
 
             if (aktuellesAbenteuer != abend.abenteuer) {
                 aktuellesAbenteuer = abend.abenteuer
-                schreibeAbenteuerName()
+                h2(aktuellesAbenteuer)
             }
 
-            schreibeTitel(abend.titel)
+            h3(abend.titel)
 
-            if (abend.zitat != null) {
-                writer.append(abend.zitat + LEERZEILE)
-            }
+            textblock(abend.zitat)
 
             abend.abschnitte.forEach { abschnitt ->
                 if (abschnitt.abenteuer != null && aktuellesAbenteuer != abschnitt.abenteuer) {
                     aktuellesAbenteuer = abschnitt.abenteuer
-                    schreibeAbenteuerName()
-                    schreibeTitel(abend.titel)
+                    h2(aktuellesAbenteuer)
+                    h3(abend.titel)
                 }
                 if (aktuellesDatum != abschnitt.datum) {
                     aktuellesDatum = abschnitt.datum
-                    writer.append("==== $aktuellesDatum$LEERZEILE")
+                    h4(abschnitt.datum)
                 }
 
-                writer.append(abschnitt.text + LEERZEILE)
+                textblock(abschnitt.text)
             }
         }
     }
 
-    private fun schreibeTitel(titel: String) {
-        writer.append("=== $titel$LEERZEILE")
-    }
-
-    private fun schreibeAbenteuerName() {
-        writer.append("== $aktuellesAbenteuer$LEERZEILE")
-    }
 }

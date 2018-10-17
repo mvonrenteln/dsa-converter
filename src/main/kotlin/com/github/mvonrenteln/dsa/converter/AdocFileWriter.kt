@@ -26,6 +26,38 @@ abstract class AdocFileWriter(val adocFile: File) {
 
     protected abstract fun writeDataInternal(daten: GruppenDaten)
 
+    protected fun h1(titel: String) {
+        writer.append("= $titel$BR")
+    }
+
+    protected fun h2(titel: String) {
+        writer.append("== $titel$LEERZEILE")
+    }
+
+    protected fun h3(titel: String) {
+        writer.append("=== $titel$LEERZEILE")
+    }
+
+    protected fun h4(titel: String) {
+        writer.append("==== $titel$LEERZEILE")
+    }
+
+    protected fun zeile(text: String?) {
+        if (text != null) {
+            writer.append("$text$BR")
+        }
+    }
+
+    protected fun textblock(text: String?) {
+        if (text != null) {
+            writer.append("$text$LEERZEILE")
+        }
+    }
+
+    protected fun inhaltsverzeichnis() {
+        writer.append(":toc:$LEERZEILE")
+    }
+
     companion object {
         val BR = "\r\n"
         val LEERZEILE = "$BR$BR"
