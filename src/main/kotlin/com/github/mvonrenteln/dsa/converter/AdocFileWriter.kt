@@ -21,7 +21,7 @@ abstract class AdocFileWriter(val adocFile: File) {
                 writeDataInternal(gruppenDaten)
             }
         }
-        println("In ADOC file geschrieben in $time ms.")
+        println("In ${adocFile.name} geschrieben in $time ms.")
     }
 
     protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)

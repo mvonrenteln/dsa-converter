@@ -21,5 +21,5 @@ fun Asciidoctor.convertFile(adocFile: File) {
     val time = measureTimeMillis {
         convertFile(adocFile, OPTIONS)
     }
-    println("ADOC in HTML konvertiert in $time ms.")
+    println("${adocFile.name} in HTML konvertiert in $time ms.")
 }
