@@ -28,11 +28,15 @@ fun main(args: Array<String>) {
 }
 
 private fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
-    val adocFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
     val data = loadDataFile<GruppenDaten>(inputStream, inputFileName)
 
-    StoryAdocFileWriter(adocFile).writeData(data)
-    ASCIIDOCTOR.convertFile(adocFile)
+    val adocStoryFile = File(outputDir, File(inputFileName).nameWithoutExtension + ".adoc")
+    StoryAdocFileWriter(adocStoryFile).writeData(data)
+    ASCIIDOCTOR.convertFile(adocStoryFile)
+
+    val apsStoryFile = File(outputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
+    ApsAdocFileWriter(apsStoryFile).writeData(data)
+    ASCIIDOCTOR.convertFile(apsStoryFile)
 }
 
 
