@@ -1,5 +1,7 @@
 package com.github.mvonrenteln.dsa.converter
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import java.io.File
 import java.io.InputStream
 import kotlin.system.measureTimeMillis
@@ -11,7 +13,7 @@ val parameterDescription = """Parameter: 1. Name der Eingabe-Datei,
 
 private val DEFAULT_OUT = "out"
 
-fun main(args: Array<String>) {
+suspend fun main(args: Array<String>) {
     val time = measureTimeMillis {
         if (args.isEmpty()) {
             println(parameterDescription)
@@ -33,16 +35,29 @@ fun main(args: Array<String>) {
 
 }
 
-private fun convert(inputFileName: String, inputStream: InputStream, storyOutputDir: String, apsOutputDir: String) {
-    val data = loadDataFile<GruppenDaten>(inputStream, inputFileName)
+@Suppress("DeferredResultUnused")
+private suspend fun convert(
+    inputFileName: String,
+    inputStream: InputStream,
+    storyOutputDir: String,
+    apsOutputDir: String
+) {
+    coroutineScope {
+        val asciidoctor = async { initAsciidoctor() }
+        val data = async { loadDataFile<GruppenDaten>(inputStream, inputFileName) }
 
-    val adocStoryFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".adoc")
-    StoryAdocFileWriter(adocStoryFile).writeData(data)
-    ASCIIDOCTOR.convertFile(adocStoryFile)
+        async {
+            val adocStoryFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".adoc")
+            StoryAdocFileWriter(adocStoryFile).writeData(data.await())
+            asciidoctor.await().convertFile(adocStoryFile)
+        }
 
-    val adocApsFile = File(apsOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
-    ApsAdocFileWriter(adocApsFile).writeData(data)
-    ASCIIDOCTOR.convertFile(adocApsFile)
+        async {
+            val adocApsFile = File(apsOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
+            ApsAdocFileWriter(adocApsFile).writeData(data.await())
+            asciidoctor.await().convertFile(adocApsFile)
+        }
+    }
 }
 
 

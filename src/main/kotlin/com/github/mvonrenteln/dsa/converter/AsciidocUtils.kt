@@ -6,8 +6,8 @@ import org.asciidoctor.SafeMode
 import java.io.File
 import kotlin.system.measureTimeMillis
 
-val ASCIIDOCTOR by lazy {
-    printMeasuredTimeAndReturnResult("AsciidoctorJ initialisiert in %d ms.") {
+fun initAsciidoctor(): Asciidoctor {
+    return printMeasuredTimeAndReturnResult("AsciidoctorJ initialisiert in %d ms.") {
         Asciidoctor.Factory.create()
     }
 }

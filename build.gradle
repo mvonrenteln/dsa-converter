@@ -23,6 +23,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:0.30.2-eap13"
     compile 'com.fasterxml.jackson.core:jackson-databind:2.9.7'
     compile 'com.fasterxml.jackson.module:jackson-module-kotlin:2.9.7'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.9.7'
