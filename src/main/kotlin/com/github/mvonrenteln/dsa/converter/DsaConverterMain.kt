@@ -8,7 +8,7 @@ import kotlin.system.measureTimeMillis
 
 val parameterDescription = """Parameter: 1. Name der Eingabe-Datei,
     |2. Ausgabe-Verzeichnis der Geschichte (Optional, Default: 'out')
-    |3. Ausgabe-Verzeichnis der AP-Übersicht (Optional, Default: 'out')
+    |3. Ausgabe-Verzeichnis der verschiedenen Übersichten (Optional, Default: 'out')
 """.trimMargin()
 
 private val DEFAULT_OUT = "out"
@@ -25,8 +25,8 @@ suspend fun main(args: Array<String>) {
             val inputFileName = args[0]
             val input = File(inputFileName).inputStream()
             val storyOutputDir = args.getOrElse(1) { DEFAULT_OUT }
-            val apsOutputDir = args.getOrElse(2) { DEFAULT_OUT }
-            convert(inputFileName, input, storyOutputDir, apsOutputDir)
+            val statistikenOutputDir = args.getOrElse(2) { DEFAULT_OUT }
+            convert(inputFileName, input, storyOutputDir, statistikenOutputDir)
         }
     }
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
@@ -40,7 +40,7 @@ private suspend fun convert(
     inputFileName: String,
     inputStream: InputStream,
     storyOutputDir: String,
-    apsOutputDir: String
+    statistikenOutputDir: String
 ) {
     coroutineScope {
         val asciidoctor = async { initAsciidoctor() }
@@ -53,8 +53,14 @@ private suspend fun convert(
         }
 
         async {
-            val adocApsFile = File(apsOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
+            val adocApsFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
             ApsAdocFileWriter(adocApsFile).writeData(data.await())
+            asciidoctor.await().convertFile(adocApsFile)
+        }
+
+        async {
+            val adocApsFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_Chronik.adoc")
+            ChronikAdocFileWriter(adocApsFile).writeData(data.await())
             asciidoctor.await().convertFile(adocApsFile)
         }
     }

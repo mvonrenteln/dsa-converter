@@ -54,21 +54,25 @@ abstract class AdocFileWriter(val adocFile: File) {
         }
     }
 
+    protected fun leerzeile() {
+        writer.append(LEERZEILE)
+    }
+
     protected fun inhaltsverzeichnis() {
         writer.append(":toc:$LEERZEILE")
     }
 
-    protected fun tabellenÜberschrift(vararg spalten: Any) {
+    protected fun tabellenÜberschrift(vararg spalten: Any?) {
         zeile(TABLE_DELIMITER)
         tabellenZeile(*spalten)
     }
 
-    protected fun tabellenZeile(vararg spalten: Any) {
-        zeile(spalten.joinToString(separator = "|", prefix = "|"))
+    protected fun tabellenZeile(vararg spalten: Any?) {
+        zeile(spalten.joinToString(separator = "|", prefix = "|", transform = oderLeer))
     }
 
-    protected fun tabellenFazit(vararg spalten: Any) {
-        zeile(spalten.joinToString(separator = "*|*", prefix = "|*", postfix = "*"))
+    protected fun tabellenFazit(vararg spalten: Any?) {
+        zeile(spalten.joinToString(separator = "*|*", prefix = "|*", postfix = "*", transform = oderLeer))
     }
 
     protected fun tabellenZelleMitTitel(inhalt: String, titel: String): String {
@@ -78,6 +82,9 @@ abstract class AdocFileWriter(val adocFile: File) {
     protected fun tabellenEnde() {
         zeile(TABLE_DELIMITER)
     }
+
+    private val oderLeer: (Any?) -> CharSequence = { it?.toString() ?: LEER }
+
 
     companion object {
         private val BR = "\r\n"
