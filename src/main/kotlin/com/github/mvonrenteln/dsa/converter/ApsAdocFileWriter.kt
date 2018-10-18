@@ -40,7 +40,7 @@ class ApsAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
 
     private fun zusammenfassung(erlebnisse: Erlebnisse) {
-        abschnittBeginnen("Zusammenfassung", NONBREAKING_SPACE)
+        abschnittBeginnen("Zusammenfassung", LEER)
         abschnittAbschliessen(erlebnisse)
     }
 
@@ -54,23 +54,34 @@ class ApsAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
 
     private fun abschnittBeginnen(ueberschrift: String, tabellenTitel: String) {
         h2(ueberschrift)
-        zeile(TABLE_DELIMITER + "|$tabellenTitel|APs|davon Charakterreife|Spieldauer")
+        tabellenÜberschrift(tabellenTitel, "APs", "davon Charakterreife", "Spieldauer")
     }
 
 
     private fun neuerAbend(abend: AbendAps) {
-        zeile("""|+++<p class="tableblock" title="${abend.zusammenfassung}">${abend.titel}</p>+++|${abend.aps}|${abend.charakterreife}|${abend.spieldauer} Stunden""")
+        tabellenZeile(
+            tabellenZelleMitTitel(abend.titel, abend.zusammenfassung),
+            abend.aps,
+            abend.charakterreife,
+            "${abend.spieldauer} Stunden"
+        )
     }
 
 
     private fun abschnittAbschliessen(abenteuer: Abenteuer) {
-        zeile(
-            """|*Durchschnitt*|*${abenteuer.apsDurchschnitt()}${apsDurchschnittBeiDurchschnittlicherSpieldauer(abenteuer)}*
-                     |*${abenteuer.characterreifeDurchschnitt()}*
-                     |*${abenteuer.spieldauerDurchschnitt()} Stunden*"""
+        tabellenFazit(
+            "Durchschnitt",
+            "${abenteuer.apsDurchschnitt()}${apsDurchschnittBeiDurchschnittlicherSpieldauer(abenteuer)}",
+            abenteuer.characterreifeDurchschnitt(),
+            "${abenteuer.spieldauerDurchschnitt()} Stunden"
         )
-        zeile("|*Gesamt*|*${abenteuer.aps}*|*${abenteuer.charakterreife}*|*${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)*")
-        zeile(TABLE_DELIMITER)
+        tabellenFazit(
+            "Gesamt",
+            abenteuer.aps,
+            abenteuer.charakterreife,
+            "${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)"
+        )
+        tabellenEnde()
     }
 
 

@@ -58,10 +58,31 @@ abstract class AdocFileWriter(val adocFile: File) {
         writer.append(":toc:$LEERZEILE")
     }
 
+    protected fun tabellenÜberschrift(vararg spalten: Any) {
+        zeile(TABLE_DELIMITER)
+        tabellenZeile(*spalten)
+    }
+
+    protected fun tabellenZeile(vararg spalten: Any) {
+        zeile(spalten.joinToString(separator = "|", prefix = "|"))
+    }
+
+    protected fun tabellenFazit(vararg spalten: Any) {
+        zeile(spalten.joinToString(separator = "*|*", prefix = "|*", postfix = "*"))
+    }
+
+    protected fun tabellenZelleMitTitel(inhalt: String, titel: String): String {
+        return """+++<p class="tableblock" title="$titel">$inhalt</p>+++"""
+    }
+
+    protected fun tabellenEnde() {
+        zeile(TABLE_DELIMITER)
+    }
+
     companion object {
-        val BR = "\r\n"
-        val LEERZEILE = "$BR$BR"
-        val TABLE_DELIMITER = "|===$BR"
-        val NONBREAKING_SPACE = "{nbsp}"
+        private val BR = "\r\n"
+        private val LEERZEILE = "$BR$BR"
+        private val TABLE_DELIMITER = "|==="
+        val LEER = "{nbsp}"
     }
 }
