@@ -31,6 +31,7 @@ class ChronikAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
                 istErsterAbschnitt = false
             }
         }
+        tabellenEnde()
     }
 
     fun datum(abschnitt: Abschnitt) =
