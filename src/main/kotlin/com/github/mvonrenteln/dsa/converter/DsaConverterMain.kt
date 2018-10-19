@@ -59,9 +59,8 @@ private suspend fun convert(
         }
 
         async {
-            val adocApsFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_Chronik.adoc")
-            ChronikAdocFileWriter(adocApsFile).writeData(data.await())
-            asciidoctor.await().convertFile(adocApsFile)
+            val htmlChronik = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_Chronik.html")
+            ChronikHtmlFileWriter(htmlChronik).writeData(data.await())
         }
     }
 }
