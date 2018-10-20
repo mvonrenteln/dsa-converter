@@ -1,8 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
-import java.io.File
-
-class StoryAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
+class StoryAdocFileWriter : AdocFileWriter() {
 
     private var aktuellesAbenteuer = ""
 

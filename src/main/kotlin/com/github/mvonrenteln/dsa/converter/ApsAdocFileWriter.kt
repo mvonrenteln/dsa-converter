@@ -1,8 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
-import java.io.File
-
-class ApsAdocFileWriter(adocFile: File) : AdocFileWriter(adocFile) {
+class ApsAdocFileWriter : AdocFileWriter() {
 
     override fun writeDataInternal(gruppenDaten: GruppenDaten) {
         val erlebnisse = berechneAps(gruppenDaten)

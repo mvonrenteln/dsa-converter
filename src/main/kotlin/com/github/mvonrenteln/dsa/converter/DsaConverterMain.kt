@@ -43,19 +43,23 @@ private suspend fun convert(
     statistikenOutputDir: String
 ) {
     coroutineScope {
-        val asciidoctor = async { initAsciidoctor() }
         val data = async { loadDataFile<GruppenDaten>(inputStream, inputFileName) }
 
         async {
-            val adocStoryFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".adoc")
-            StoryAdocFileWriter(adocStoryFile).writeData(data.await())
-            asciidoctor.await().convertFile(adocStoryFile)
+            val htmlFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".html")
+            val md = StoryAdocFileWriter().writeData(data.await())
+            val document = PARSER.parse(md)
+            val html = RENDERER.render(document)
+            htmlFile.writeText(writeHtml(html))
         }
 
         async {
-            val adocApsFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
-            ApsAdocFileWriter(adocApsFile).writeData(data.await())
-            asciidoctor.await().convertFile(adocApsFile)
+            val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
+            ApsAdocFileWriter().writeData(data.await())
+            val md = ApsAdocFileWriter().writeData(data.await())
+            val document = PARSER.parse(md)
+            val html = RENDERER.render(document)
+            htmlFile.writeText(writeHtml(html))
         }
 
         async {
@@ -65,6 +69,16 @@ private suspend fun convert(
     }
 }
 
+
+fun writeHtml(body: String) =
+    """<?xml version="1.0" encoding="UTF-8"?><html>
+        <head>
+            <title>Hello world</title>
+        </head>
+        <body>
+            $body
+        </body>
+        </html>"""
 
 
 

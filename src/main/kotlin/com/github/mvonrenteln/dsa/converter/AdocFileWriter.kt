@@ -1,45 +1,37 @@
 package com.github.mvonrenteln.dsa.converter
 
-import java.io.File
-import java.io.FileOutputStream
-import java.io.Writer
-import kotlin.properties.Delegates.notNull
+import java.io.StringWriter
 import kotlin.system.measureTimeMillis
 
-abstract class AdocFileWriter(val adocFile: File) {
+abstract class AdocFileWriter {
 
-    private var writer: Writer by notNull()
+    private var writer = StringWriter()
 
-    init {
-        adocFile.delete()
-    }
-
-    fun writeData(gruppenDaten: GruppenDaten) {
+    fun writeData(gruppenDaten: GruppenDaten): String {
         val time = measureTimeMillis {
-            FileOutputStream(adocFile, true).writer().buffered().use {
-                this.writer = it
-                writeDataInternal(gruppenDaten)
-            }
+            writeDataInternal(gruppenDaten)
         }
-        println("In ${adocFile.name} geschrieben in $time ms.")
+        println("Markdown geschrieben in $time ms.")
+        return writer.toString()
     }
+
 
     protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)
 
     protected fun h1(titel: String) {
-        writer.append("= $titel$BR")
+        writer.append("# $titel$BR")
     }
 
     protected fun h2(titel: String) {
-        writer.append("== $titel$LEERZEILE")
+        writer.append("## $titel$LEERZEILE")
     }
 
     protected fun h3(titel: String) {
-        writer.append("=== $titel$LEERZEILE")
+        writer.append("### $titel$LEERZEILE")
     }
 
     protected fun h4(titel: String) {
-        writer.append("==== $titel$LEERZEILE")
+        writer.append("#### $titel$LEERZEILE")
     }
 
     protected fun zeile(text: String?) {
@@ -59,7 +51,7 @@ abstract class AdocFileWriter(val adocFile: File) {
     }
 
     protected fun inhaltsverzeichnis() {
-        writer.append(":toc:$LEERZEILE")
+        writer.append("[TOC]$LEERZEILE")
     }
 
     protected fun tabellenÜberschrift(vararg spalten: Any?) {
