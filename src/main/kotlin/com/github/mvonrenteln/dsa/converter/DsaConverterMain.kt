@@ -50,16 +50,16 @@ private suspend fun convert(
             val md = StoryAdocFileWriter().writeData(data.await())
             val document = PARSER.parse(md)
             val html = RENDERER.render(document)
-            htmlFile.writeText(writeHtml(html))
+            htmlFile.writeText(writeHtml(html, data.await().gruppe))
         }
 
         async {
-            val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.adoc")
+            val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.html")
             ApsAdocFileWriter().writeData(data.await())
             val md = ApsAdocFileWriter().writeData(data.await())
             val document = PARSER.parse(md)
             val html = RENDERER.render(document)
-            htmlFile.writeText(writeHtml(html))
+            htmlFile.writeText(writeHtml(html, data.await().gruppe))
         }
 
         async {
@@ -70,7 +70,7 @@ private suspend fun convert(
 }
 
 
-fun writeHtml(body: String) =
+fun writeHtml(body: String, gruppe: String) =
     """<!DOCTYPE html>
 <html lang="de">
   <head>
@@ -78,7 +78,7 @@ fun writeHtml(body: String) =
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Die 3 Meta-Tags oben *müssen* zuerst im head stehen; jeglicher sonstiger head-Inhalt muss *nach* diesen Tags kommen -->
-    <title>Bootstrap-Basis-Vorlage</title>
+    <title>Erlebnisse der $gruppe</title>
 
     <!-- Das neueste kompilierte und minimierte CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -94,7 +94,9 @@ fun writeHtml(body: String) =
     <![endif]-->
   </head>
   <body>
-    $body
+    <div class="container">
+        $body
+    </div>
 
     <!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
