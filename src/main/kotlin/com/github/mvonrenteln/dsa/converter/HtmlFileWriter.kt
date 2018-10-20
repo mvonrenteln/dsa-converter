@@ -3,7 +3,7 @@ package com.github.mvonrenteln.dsa.converter
 import java.io.StringWriter
 import kotlin.system.measureTimeMillis
 
-abstract class AdocFileWriter {
+abstract class HtmlFileWriter {
 
     private var writer = StringWriter()
 
@@ -19,19 +19,19 @@ abstract class AdocFileWriter {
     protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)
 
     protected fun h1(titel: String) {
-        writer.append("# $titel$BR")
+        writer.append("<h1>$titel</h1>$LEERZEILE")
     }
 
     protected fun h2(titel: String) {
-        writer.append("## $titel$LEERZEILE")
+        writer.append("<h2>$titel</h2>$LEERZEILE")
     }
 
     protected fun h3(titel: String) {
-        writer.append("### $titel$LEERZEILE")
+        writer.append("<h3>$titel<h3>$LEERZEILE")
     }
 
     protected fun h4(titel: String) {
-        writer.append("#### $titel$LEERZEILE")
+        writer.append("<h4>$titel<h4>$LEERZEILE")
     }
 
     protected fun zeile(text: String?) {
@@ -55,33 +55,40 @@ abstract class AdocFileWriter {
     }
 
     protected fun tabellenÜberschrift(vararg spalten: Any?) {
-        zeile(TABLE_DELIMITER)
-        tabellenZeile(*spalten)
+        zeile("""<table class="table table-striped table-hover">""")
+        zeile("<tr>")
+        spalten.forEach { writer.append("<th>${it.oderLeer()}</th>") }
+        zeile("</tr>")
     }
 
     protected fun tabellenZeile(vararg spalten: Any?) {
-        zeile(spalten.joinToString(separator = "|", prefix = "|", transform = oderLeer))
+        zeile("<tr>")
+        spalten.forEach { writer.append("<td>${it.oderLeer()}</td>") }
+        leerzeile()
+        zeile("</tr>")
     }
 
     protected fun tabellenFazit(vararg spalten: Any?) {
-        zeile(spalten.joinToString(separator = "*|*", prefix = "|*", postfix = "*", transform = oderLeer))
+        zeile("<tr>")
+        spalten.forEach { writer.append("<td><b>${it.oderLeer()}</b></td>") }
+        leerzeile()
+        zeile("</tr>")
     }
 
     protected fun tabellenZelleMitTitel(inhalt: String, titel: String): String {
-        return """+++<p class="tableblock" title="$titel">$inhalt</p>+++"""
+        return """<div data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$titel">$inhalt</div>"""
     }
 
     protected fun tabellenEnde() {
-        zeile(TABLE_DELIMITER)
+        zeile("</table>")
     }
 
-    private val oderLeer: (Any?) -> CharSequence = { it?.toString() ?: LEER }
+    private fun Any?.oderLeer() = this?.toString() ?: LEER
 
 
     companion object {
         private val BR = "\r\n"
         private val LEERZEILE = "$BR$BR"
-        private val TABLE_DELIMITER = "|==="
-        val LEER = "{nbsp}"
+        val LEER = "&nbsp;"
     }
 }

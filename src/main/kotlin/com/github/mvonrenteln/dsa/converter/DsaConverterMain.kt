@@ -47,7 +47,7 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".html")
-            val md = StoryAdocFileWriter().writeData(data.await())
+            val md = StoryHtmlFileWriter().writeData(data.await())
             val document = PARSER.parse(md)
             val html = RENDERER.render(document)
             htmlFile.writeText(writeHtml(html, data.await().gruppe))
@@ -55,8 +55,8 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.html")
-            ApsAdocFileWriter().writeData(data.await())
-            val md = ApsAdocFileWriter().writeData(data.await())
+            ApsHtmlFileWriter().writeData(data.await())
+            val md = ApsHtmlFileWriter().writeData(data.await())
             val document = PARSER.parse(md)
             val html = RENDERER.render(document)
             htmlFile.writeText(writeHtml(html, data.await().gruppe))
@@ -86,12 +86,19 @@ fun writeHtml(body: String, gruppe: String) =
     <!-- Optionales Theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
+    <style type="text/css" class="init">
+        .popover {
+            max-width:600px;
+        }
+    </style>
+
     <!-- Unterstützung für Media Queries und HTML5-Elemente in IE8 über HTML5 shim und Respond.js -->
     <!-- ACHTUNG: Respond.js funktioniert nicht, wenn du die Seite über file:// aufrufst -->
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+
   </head>
   <body>
     <div class="container">
@@ -102,6 +109,12 @@ fun writeHtml(body: String, gruppe: String) =
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Binde alle kompilierten Plugins zusammen ein (wie hier unten) oder such dir einzelne Dateien nach Bedarf aus -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <script>
+    ${'$'}(document).ready(function(){
+        ${'$'}('[data-toggle="popover"]').popover();
+    });
+    </script>
   </body>
 </html>"""
 
