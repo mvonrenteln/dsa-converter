@@ -4,6 +4,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.io.File
 import java.io.InputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 import kotlin.system.measureTimeMillis
 
 val parameterDescription = """Parameter: 1. Name der Eingabe-Datei,
@@ -90,6 +94,31 @@ fun writeHtml(body: String, gruppe: String) =
         .popover {
             max-width:600px;
         }
+
+        .footer {
+            color: rgba(255,255,255,.8);
+            background-color: rgba(0,0,0,.8);
+            padding: 1.25em;
+        }
+
+        h1, h2 {
+            font-family: "Open Sans","DejaVu Sans",sans-serif;
+            letter-spacing: -.01em;
+            font-weight: 300;
+            font-style: normal;
+            line-height: 1.2;
+            margin-top: 1em;
+            margin-bottom: .5em;
+        }
+
+        h1 {
+            font-size: 2.75em;
+        }
+
+        h2 {
+            font-size: 2.3125em;
+            color: #ba3925;
+        }
     </style>
 
     <!-- Unterstützung für Media Queries und HTML5-Elemente in IE8 über HTML5 shim und Respond.js -->
@@ -103,6 +132,11 @@ fun writeHtml(body: String, gruppe: String) =
   <body>
     <div class="container">
         $body
+    </div>
+
+    <div class="container-fluid footer">
+        Erstellt am ${LocalDateTime.now()
+        .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))}
     </div>
 
     <!-- jQuery (wird für Bootstrap JavaScript-Plugins benötigt) -->
