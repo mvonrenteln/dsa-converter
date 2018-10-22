@@ -11,7 +11,7 @@ abstract class HtmlFileWriter {
         val time = measureTimeMillis {
             writeDataInternal(gruppenDaten)
         }
-        println("Markdown geschrieben in $time ms.")
+        println("HTML geschrieben in $time ms.")
         return writer.toString()
     }
 
@@ -27,11 +27,11 @@ abstract class HtmlFileWriter {
     }
 
     protected fun h3(titel: String) {
-        writer.append("<h3>$titel<h3>$LEERZEILE")
+        writer.append("<h3>$titel</h3>$LEERZEILE")
     }
 
     protected fun h4(titel: String) {
-        writer.append("<h4>$titel<h4>$LEERZEILE")
+        writer.append("<h4>$titel</h4>$LEERZEILE")
     }
 
     protected fun zeile(text: String?) {
