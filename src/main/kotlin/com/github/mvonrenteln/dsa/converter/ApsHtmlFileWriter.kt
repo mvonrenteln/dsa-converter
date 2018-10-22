@@ -5,7 +5,6 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
     override fun writeDataInternal(gruppenDaten: GruppenDaten) {
         val erlebnisse = berechneAps(gruppenDaten)
         h1("APs der ${erlebnisse.name}")
-        inhaltsverzeichnis()
         zusammenfassung(erlebnisse)
         erlebnisse.abenteuer.forEach { neuesAbenteuer(it) }
     }

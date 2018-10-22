@@ -18,8 +18,9 @@ abstract class HtmlFileWriter {
 
     protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)
 
-    protected fun h1(titel: String) {
-        writer.append("<h1>$titel</h1>$LEERZEILE")
+    protected fun h1(titel: String, untertitel: String? = null) {
+        val untertitelTag = if (untertitel != null) " <small>$untertitel</small>" else ""
+        writer.append("<h1>$titel$untertitelTag</h1>$LEERZEILE")
     }
 
     protected fun h2(titel: String) {
@@ -48,10 +49,6 @@ abstract class HtmlFileWriter {
 
     protected fun leerzeile() {
         writer.append(LEERZEILE)
-    }
-
-    protected fun inhaltsverzeichnis() {
-        writer.append("[TOC]$LEERZEILE")
     }
 
     protected fun tabelle(vararg spalten: Any?, block: () -> Unit) {

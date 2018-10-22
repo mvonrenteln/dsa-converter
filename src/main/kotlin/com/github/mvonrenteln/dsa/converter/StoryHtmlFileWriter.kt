@@ -8,9 +8,7 @@ class StoryHtmlFileWriter : HtmlFileWriter() {
 
 
     override fun writeDataInternal(gruppenDaten: GruppenDaten) {
-        h1("${gruppenDaten.titel} (${gruppenDaten.gruppe})")
-        zeile(gruppenDaten.verfasser)
-        inhaltsverzeichnis()
+        h1("${gruppenDaten.titel} (${gruppenDaten.gruppe})", gruppenDaten.verfasser)
 
         textblock(gruppenDaten.einleitung)
 
