@@ -85,6 +85,9 @@ fun writeHtml(body: String, gruppe: String) =
     <!-- Optionales Theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Spectral">
+
     <style type="text/css" class="init">
         .popover {
             max-width:600px;
@@ -116,7 +119,7 @@ fun writeHtml(body: String, gruppe: String) =
         }
 
         p {
-            font-family: Georgia, serif;
+            font-family: 'Spectral', serif;
             font-size: 18px;
             line-height: 28px;
             margin: 0 0 28px;
