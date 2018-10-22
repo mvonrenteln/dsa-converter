@@ -119,6 +119,13 @@ fun writeHtml(body: String, gruppe: String) =
             font-size: 2.3125em;
             color: #ba3925;
         }
+
+        p {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            line-height: 28px;
+            margin: 0 0 28px;
+        }
     </style>
 
     <!-- Unterstützung für Media Queries und HTML5-Elemente in IE8 über HTML5 shim und Respond.js -->
