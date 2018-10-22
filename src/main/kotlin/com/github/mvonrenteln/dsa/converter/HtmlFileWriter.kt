@@ -83,14 +83,14 @@ abstract class HtmlFileWriter {
 
     protected fun String.toHtml(): String {
         val document = PARSER.parse(this)
-        return RENDERER.render(document)
+        return RENDERER.render(document).replace("+\n", "<BR/>")
     }
 
     private fun Any?.oderLeer() = this?.toString() ?: LEER
 
 
     companion object {
-        private val BR = "\r\n"
+        private val BR = "\n"
         private val LEERZEILE = "$BR$BR"
         val LEER = "&nbsp;"
     }
