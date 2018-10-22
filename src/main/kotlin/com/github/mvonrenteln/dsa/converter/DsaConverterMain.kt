@@ -163,12 +163,16 @@ fun writeHtml(body: String, gruppe: String, texttyp: String) =
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
-    <script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.0/dist/bootstrap-toc.min.js"></script>
+    <script src="https://rishikeshdarandale.github.io/aws-http/assets/javascripts/vendor/bootstrap-toc.min.js"></script>
 
     <script>
     ${'$'}(document).ready(function(){
         ${'$'}('[data-toggle="popover"]').popover();
     });
+
+    ${'$'}('[data-spy="scroll"]').each(function () {
+      var ${'$'}spy = ${'$'}(this).scrollspy('refresh')
+    })
     </script>
   </body>
 </html>"""
