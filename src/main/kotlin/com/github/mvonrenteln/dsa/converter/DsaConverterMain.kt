@@ -52,13 +52,13 @@ private suspend fun convert(
         async {
             val htmlFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".html")
             val html = StoryHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(writeHtml(html, data.await().gruppe))
+            htmlFile.writeText(writeHtml(html, data.await().gruppe, "fliesstext"))
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.html")
             val html = ApsHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(writeHtml(html, data.await().gruppe))
+            htmlFile.writeText(writeHtml(html, data.await().gruppe, ""))
         }
 
         async {
@@ -69,7 +69,7 @@ private suspend fun convert(
 }
 
 
-fun writeHtml(body: String, gruppe: String) =
+fun writeHtml(body: String, gruppe: String, texttyp: String) =
     """<!DOCTYPE html>
 <html lang="de">
   <head>
@@ -124,6 +124,10 @@ fun writeHtml(body: String, gruppe: String) =
             line-height: 28px;
             margin: 0 0 28px;
         }
+
+        .fliesstext {
+            max-width: 60em;
+        }
     </style>
 
     <!-- Unterstützung für Media Queries und HTML5-Elemente in IE8 über HTML5 shim und Respond.js -->
@@ -135,7 +139,7 @@ fun writeHtml(body: String, gruppe: String) =
 
   </head>
   <body>
-    <div class="container">
+    <div class="container $texttyp">
         $body
     </div>
 
