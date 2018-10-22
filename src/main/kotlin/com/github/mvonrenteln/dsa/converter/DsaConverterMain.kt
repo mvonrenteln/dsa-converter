@@ -51,18 +51,13 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".html")
-            val md = StoryHtmlFileWriter().writeData(data.await())
-            val document = PARSER.parse(md)
-            val html = RENDERER.render(document)
+            val html = StoryHtmlFileWriter().writeData(data.await())
             htmlFile.writeText(writeHtml(html, data.await().gruppe))
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.html")
-            ApsHtmlFileWriter().writeData(data.await())
-            val md = ApsHtmlFileWriter().writeData(data.await())
-            val document = PARSER.parse(md)
-            val html = RENDERER.render(document)
+            val html = ApsHtmlFileWriter().writeData(data.await())
             htmlFile.writeText(writeHtml(html, data.await().gruppe))
         }
 
@@ -101,7 +96,7 @@ fun writeHtml(body: String, gruppe: String) =
             padding: 1.25em;
         }
 
-        h1, h2 {
+        h1, h2, h3 {
             font-family: "Open Sans","DejaVu Sans",sans-serif;
             letter-spacing: -.01em;
             font-weight: 300;

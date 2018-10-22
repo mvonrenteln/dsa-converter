@@ -42,7 +42,7 @@ abstract class HtmlFileWriter {
 
     protected fun textblock(text: String?) {
         if (text != null) {
-            writer.append("$text$LEERZEILE")
+            writer.append("${text.toHtml()}$LEERZEILE")
         }
     }
 
@@ -81,6 +81,11 @@ abstract class HtmlFileWriter {
 
     protected fun tabellenEnde() {
         zeile("</table>")
+    }
+
+    protected fun String.toHtml(): String {
+        val document = PARSER.parse(this)
+        return RENDERER.render(document)
     }
 
     private fun Any?.oderLeer() = this?.toString() ?: LEER
