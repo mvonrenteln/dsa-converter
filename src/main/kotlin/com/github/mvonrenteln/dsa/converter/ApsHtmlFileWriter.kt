@@ -38,21 +38,23 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
 
 
     private fun zusammenfassung(erlebnisse: Erlebnisse) {
-        abschnittBeginnen("Zusammenfassung", LEER)
-        abschnittAbschliessen(erlebnisse)
+        h2("Zusammenfassung")
+        apTabelle(LEER) {
+            abschnittAbschliessen(erlebnisse)
+        }
     }
 
 
     private fun neuesAbenteuer(abenteuer: Abenteuer) {
-        abschnittBeginnen(abenteuer.name, "Abschnitt")
-        abenteuer.abendeDetails.forEach { neuerAbend(it) }
-        abschnittAbschliessen(abenteuer)
+        h2(abenteuer.name)
+        apTabelle("Abschnitt") {
+            abenteuer.abendeDetails.forEach { neuerAbend(it) }
+            abschnittAbschliessen(abenteuer)
+        }
     }
 
-
-    private fun abschnittBeginnen(ueberschrift: String, tabellenTitel: String) {
-        h2(ueberschrift)
-        tabellenÜberschrift(tabellenTitel, "APs", "davon Charakterreife", "Spieldauer")
+    private fun apTabelle(titel: String, block: () -> Unit) {
+        tabelle(titel, "APs", "davon Charakterreife", "Spieldauer") { block() }
     }
 
 
@@ -79,7 +81,6 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
             abenteuer.charakterreife,
             "${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)"
         )
-        tabellenEnde()
     }
 
 

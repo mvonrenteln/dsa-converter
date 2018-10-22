@@ -54,11 +54,13 @@ abstract class HtmlFileWriter {
         writer.append("[TOC]$LEERZEILE")
     }
 
-    protected fun tabellenÜberschrift(vararg spalten: Any?) {
+    protected fun tabelle(vararg spalten: Any?, block: () -> Unit) {
         zeile("""<table class="table table-striped table-hover">""")
         zeile("<tr>")
         spalten.forEach { writer.append("<th>${it.oderLeer()}</th>") }
         zeile("</tr>")
+        block()
+        zeile("</table>")
     }
 
     protected fun tabellenZeile(vararg spalten: Any?) {
@@ -77,10 +79,6 @@ abstract class HtmlFileWriter {
 
     protected fun tabellenZelleMitTitel(inhalt: String, titel: String): String {
         return """<div data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$titel">$inhalt</div>"""
-    }
-
-    protected fun tabellenEnde() {
-        zeile("</table>")
     }
 
     protected fun String.toHtml(): String {
