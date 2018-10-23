@@ -52,13 +52,13 @@ private suspend fun convert(
         async {
             val htmlFile = File(storyOutputDir, File(inputFileName).nameWithoutExtension + ".html")
             val html = StoryHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(writeHtml(html, data.await().gruppe, "fliesstext"))
+            htmlFile.writeText(generateHtml(html, data.await().gruppe))
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, File(inputFileName).nameWithoutExtension + "_APs.html")
             val html = ApsHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(writeHtml(html, data.await().gruppe, ""))
+            htmlFile.writeText(generateHtml(html, data.await().gruppe))
         }
 
         async {
@@ -69,7 +69,7 @@ private suspend fun convert(
 }
 
 
-fun writeHtml(body: String, gruppe: String, texttyp: String) =
+fun generateHtml(body: String, gruppe: String) =
     """<!DOCTYPE html>
 <html lang="de">
   <head>
