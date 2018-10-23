@@ -94,6 +94,10 @@ fun writeHtml(body: String, gruppe: String, texttyp: String) =
             max-width:600px;
         }
 
+        nav[data-toggle='toc'] .nav .nav {
+            display: block;
+          }
+
         .footer {
             color: rgba(255,255,255,.8);
             background-color: rgba(0,0,0,.8);
