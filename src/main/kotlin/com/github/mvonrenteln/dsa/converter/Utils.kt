@@ -21,3 +21,17 @@ fun String.entferneAllesAb(start: String): String {
     val startIndex = this.indexOf(start)
     return if (startIndex != -1) this.substring(0, startIndex) else this
 }
+
+fun String.onlyWordCharacters(): String {
+    val output = StringBuilder(this.length)
+
+    for (ch in this) {
+        if (Character.isLetterOrDigit(ch)) {
+            output.append(ch)
+        } else if (Character.isWhitespace(ch)) {
+            output.append("-")
+        }
+    }
+
+    return output.toString()
+}

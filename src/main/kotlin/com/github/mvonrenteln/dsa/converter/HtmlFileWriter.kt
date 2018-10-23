@@ -38,15 +38,8 @@ abstract class HtmlFileWriter {
     }
 
     protected fun alsId(titel: String): String {
-        var id = titel.toLowerCase()
-            .replace(" ", "-")
-            .replace(",", "")
-            .replace(".", "")
-            .replace("(", "")
-            .replace(")", "")
-            .replace("ä", "ae")
-            .replace("ö", "oe")
-            .replace("ü", "ue")
+        var id = titel.toLowerCase().onlyWordCharacters()
+
         if (kapitel.containsKey(id)) {
             id += Math.random().toString().substring(2..5)
         }
