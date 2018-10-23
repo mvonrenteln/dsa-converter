@@ -1,5 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
@@ -13,9 +14,9 @@ val yamlFactory = YAMLFactory()
     .enable(YAMLGenerator.Feature.INDENT_ARRAYS)
     .disable(YAMLGenerator.Feature.SPLIT_LINES)
 
-val yamlMapper = ObjectMapper(yamlFactory).registerKotlinModule()
+val yamlMapper = ObjectMapper(yamlFactory).registerKotlinModule().setSerializationInclusion(NON_NULL)
 
-val jsonMapper = ObjectMapper().registerKotlinModule()
+val jsonMapper = ObjectMapper().registerKotlinModule().setSerializationInclusion(NON_NULL)
 
 
 inline fun <reified T> loadDataFile(inputStream: InputStream, inputFileName: String): T {
