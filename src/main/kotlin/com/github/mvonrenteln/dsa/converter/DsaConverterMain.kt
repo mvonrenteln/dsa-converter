@@ -100,31 +100,48 @@ fun writeHtml(body: String, gruppe: String, texttyp: String) =
             padding: 1.25em;
         }
 
+        body {
+          line-height: 1.4; // Base line height
+          color: #333
+        }
 
-        h1, h2, h3 {
+
+        h1, h2, h3, h4 {
             font-family: "Open Sans","DejaVu Sans",sans-serif;
             letter-spacing: -.01em;
             font-weight: 300;
             font-style: normal;
-            line-height: 1.2;
-            margin-top: 1em;
-            margin-bottom: .5em;
         }
 
         h1 {
-            font-size: 2.75em;
+            font-size: 3em;
+            margin-bottom: 3.5rem; // Double the base value for a larger gap (1.75 * 2) = 3.5
         }
 
         h2 {
-            font-size: 2.3125em;
+            font-size: 2em;
+            margin-bottom: 1.75rem;
             color: #ba3925;
+        }
+
+        h3 {
+            font-size: 1.5em;
+            margin-bottom: 1.75rem;
+        }
+
+        h4 {
+            font-size: 1.25em;
+            margin-bottom: 1.75rem;
         }
 
         p {
             font-family: 'Spectral', serif;
-            font-size: 18px;
-            line-height: 28px;
-            margin: 0 0 28px;
+            font-size: 1.25em; // Base font size
+            margin-bottom: 1.75rem; // Base vertical spacing: (1.4 * 1.25) = 1.75
+          }
+
+        .content {
+            padding: 3.5rem 2rem;
         }
 
     </style>
@@ -138,7 +155,7 @@ fun writeHtml(body: String, gruppe: String, texttyp: String) =
 
   </head>
   <body data-spy="scroll" data-target="#toc">
-    <div class="container">
+    <div class="container-fluid">
 
         <div class="row">
           <!-- sidebar, which will move to the top on a small screen -->
@@ -146,7 +163,7 @@ fun writeHtml(body: String, gruppe: String, texttyp: String) =
             <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 20px;"></nav>
           </div>
           <!-- main content area -->
-          <div class="col-sm-9">
+          <div class="col-sm-9 content">
             $body
           </div>
     </div>
