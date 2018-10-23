@@ -7,6 +7,8 @@ abstract class HtmlFileWriter {
 
     private var writer = StringWriter()
 
+    private val kapitel = mutableMapOf<String, String>()
+
     fun writeData(gruppenDaten: GruppenDaten): String {
         val time = measureTimeMillis {
             writeDataInternal(gruppenDaten)
@@ -20,22 +22,41 @@ abstract class HtmlFileWriter {
 
     protected fun h1(titel: String, untertitel: String? = null) {
         val untertitelTag = if (untertitel != null) " <small>$untertitel</small>" else ""
-        writer.append("<h1>$titel$untertitelTag</h1>$LEERZEILE")
+        writer.append("""<h1 id="${alsId(titel)}">$titel$untertitelTag</h1>$LEERZEILE""")
     }
 
     protected fun h2(titel: String) {
-        writer.append("<h2>$titel</h2>$LEERZEILE")
+        writer.append("""<h2 id="${alsId(titel)}">$titel</h2>$LEERZEILE""")
     }
 
     protected fun h3(titel: String) {
-        writer.append("<h3>$titel</h3>$LEERZEILE")
+        writer.append("""<h3 id="${alsId(titel)}">$titel</h3>$LEERZEILE""")
     }
 
     protected fun h4(titel: String) {
-        writer.append("<h4>$titel</h4>$LEERZEILE")
+        writer.append("""<h4 id="${alsId(titel)}">$titel</h4>$LEERZEILE""")
+    }
+
+    protected fun alsId(titel: String): String {
+        var id = titel.toLowerCase()
+            .replace(" ", "-")
+            .replace(",", "")
+            .replace(".", "")
+            .replace("(", "")
+            .replace(")", "")
+            .replace("ä", "ae")
+            .replace("ö", "oe")
+            .replace("ü", "ue")
+        if (kapitel.containsKey(id)) {
+            id += Math.random().toString().substring(2..5)
+        }
+        kapitel.put(id, titel)
+
+        return id
     }
 
     protected fun zeile(text: String?) {
+
         if (text != null) {
             writer.append("$text$BR")
         }
