@@ -70,7 +70,7 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
     private fun abschnittAbschliessen(abenteuer: Abenteuer) {
         tabellenFazit(
             "Durchschnitt",
-            "${abenteuer.apsDurchschnitt()}${apsDurchschnittBeiDurchschnittlicherSpieldauer(abenteuer)}",
+            "${abenteuer.apsDurchschnitt()}",
             abenteuer.characterreifeDurchschnitt(),
             "${abenteuer.spieldauerDurchschnitt()} Stunden"
         )
@@ -80,11 +80,6 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
             abenteuer.charakterreife,
             "${abenteuer.abende} Abende (${abenteuer.spieldauer} Stunden)"
         )
-    }
-
-
-    private fun apsDurchschnittBeiDurchschnittlicherSpieldauer(abenteuer: Abenteuer): String {
-        return " (${abenteuer.apsDurchschnittBeiDurchschnittlicherSpieldauer()} f&uuml;r ${abenteuer.spieldauerDurchschnitt()} Stunden)"
     }
 
 }

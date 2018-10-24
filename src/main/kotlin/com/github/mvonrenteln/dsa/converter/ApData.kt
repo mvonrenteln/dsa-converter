@@ -1,5 +1,7 @@
 package com.github.mvonrenteln.dsa.converter
 
+import kotlin.math.roundToInt
+
 class Erlebnisse(gruppenName: String) : Abenteuer(gruppenName) {
 
     val abenteuer: MutableList<Abenteuer> = mutableListOf()
@@ -34,13 +36,11 @@ open class Abenteuer(
         }
     }
 
-    fun spieldauerDurchschnitt() = spieldauer / abende
+    fun spieldauerDurchschnitt() = (spieldauer.toDouble() / abende.toDouble()).roundToInt()
 
-    fun apsDurchschnitt() = aps / abende
+    fun apsDurchschnitt() = (aps.toDouble() / abende.toDouble()).roundToInt()
 
-    fun apsDurchschnittBeiDurchschnittlicherSpieldauer() = aps / spieldauer * spieldauerDurchschnitt()
-
-    fun characterreifeDurchschnitt() = charakterreife / abende
+    fun characterreifeDurchschnitt() = (charakterreife.toDouble() / abende.toDouble()).roundToInt()
 
     companion object {
         val LEER = Abenteuer()
