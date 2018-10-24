@@ -1,0 +1,21 @@
+- vorname: Arombolosch
+  name: Sohn des Agam
+  titel: Bergkönig von Waldwacht, Oberster Richter der Ambosszwerge, Angroschs Waffenmeister
+  gruppen:
+  - Ambosszwerge
+  wohnort: Murolosch
+  position: Bergkönig der Ambosszwerge
+  profession: Waffenschmied
+  spezies: Zwerg
+  aussehen: graue Haare, blaue Augen, 1,34 Schritt groß
+  tsatag: 738 BF
+  sprache: ruhig, überlegt, lange Pausen, dunkel
+  charakter: geduldig, weise, vorrausschauend
+  aussprüche: []
+  beziehungZuHelden: väterlicher Freund, Verbündeter und Ratgeber
+  wikiLink: https://de.wiki-aventurica.de/wiki/Arombolosch_Sohn_des_Agam
+  bild: https://de.wiki-aventurica.de/de/images/f/fd/Arombolosch_Sohn_des_Agam.jpg
+  tags:
+  - König
+  - Freund
+  - mächtig

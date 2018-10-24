@@ -60,6 +60,8 @@ private suspend fun convert(
 
         val gruppenDaten = ladeGruppenDaten(inputFiles)
 
+        val nscs = ladeNscs(inputFiles)
+
         val nameBasis = inputFiles[0].nameWithoutExtension.substringBefore('(').trim()
 
         async {
@@ -81,27 +83,37 @@ private suspend fun convert(
     }
 }
 
+
 private suspend fun CoroutineScope.ladeGruppenDaten(inputFiles: Array<File>): GruppenDaten {
     return inputFiles
         .sorted()
+        .filter { !it.name.contains("NSC") }
         .map {
             async { loadDataFile<GruppenDaten>(it) }
         }
         .map { it.await() }
-        .reduce(::gruppenDatenZusammenfassen)
+        .reduce { gruppe1, gruppe2 ->
+            GruppenDaten(
+                gruppe2.gruppe,
+                gruppe2.mitglieder,
+                gruppe2.titel,
+                gruppe2.verfasser,
+                gruppe2.einleitung,
+                gruppe1.abende + gruppe2.abende
+            )
+        }
 }
 
-fun gruppenDatenZusammenfassen(gruppenDaten1: GruppenDaten, gruppenDaten2: GruppenDaten): GruppenDaten {
-    return GruppenDaten(
-        gruppenDaten2.gruppe,
-        gruppenDaten2.mitglieder,
-        gruppenDaten2.titel,
-        gruppenDaten2.verfasser,
-        gruppenDaten2.einleitung,
-        gruppenDaten1.abende + gruppenDaten2.abende
-    )
-}
 
+private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> {
+    return inputFiles
+        .filter { it.name.contains("NSC") }
+        .map {
+            async { loadDataFile<Array<Nsc>>(it) }
+        }
+        .map { it.await() }
+        .flatMap { it.toList() }
+}
 
 fun generateHtml(body: String, gruppe: String) =
     """<!DOCTYPE html>

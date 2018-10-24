@@ -40,3 +40,27 @@ data class Abschnitt(
 
 data class Effekt(val auswirkung: String, val held: String, val wirktBis: String)
 
+data class Nsc(
+    val vorname: String?,
+    val name: String?,
+    val titel: String?,
+    val profession: String?,
+    val spezies: String?,
+    val gruppen: List<String>?,
+    val wohnort: String?,
+    val position: String?,
+    val aussehen: String?,
+    val alter: String?,
+    val tsatag: String?,
+    val sprache: String?,
+    val charakter: String?,
+    val aussprüche: List<String>?,
+    val beziehungZuHelden: String?,
+    val motivation: String?,
+    val vergangenheit: String?,
+    val status: String?,
+    val tags: List<String>?,
+    val wikiLink: String?,
+    val bild: String?
+)
+
