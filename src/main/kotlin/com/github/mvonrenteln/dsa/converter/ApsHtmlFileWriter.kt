@@ -27,7 +27,7 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
                 aps = abend.aps.map { it.aps }.sum(),
                 charakterreife = abend.aps[0].aps,
                 spieldauer = abend.spieldauer,
-                zusammenfassung = abend.abschnitte.map { it.zusammenfassung }.joinToString(" ")
+                zusammenfassung = abend.abschnitte.map { it.zusammenfassung }.filterNotNull().joinToString(" ")
             )
             abenteuer.abendHinzufuegen(derAbend)
         }

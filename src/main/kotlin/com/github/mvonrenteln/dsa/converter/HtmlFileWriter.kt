@@ -88,8 +88,11 @@ abstract class HtmlFileWriter {
         zeile("</tr>")
     }
 
-    protected fun tabellenZelleMitTitel(inhalt: String, titel: String): String {
-        return """<div data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$titel">$inhalt</div>"""
+    protected fun tabellenZelleMitTitel(inhalt: String, titel: String?): String {
+        return if (titel.isNullOrBlank())
+            inhalt
+        else
+            """<div data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$titel">$inhalt</div>"""
     }
 
     protected fun String.toHtml(): String {
