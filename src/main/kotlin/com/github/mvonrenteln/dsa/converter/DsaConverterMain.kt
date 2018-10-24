@@ -1,5 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import java.io.File
@@ -10,7 +11,11 @@ import java.util.*
 import kotlin.system.measureTimeMillis
 
 val parameterDescription = """Parameter:
-    |  1. Name der Eingabe-Datei,
+    |  1. Name der Eingabe-Datei oder des Eingabe-Verzeichnisses,
+    |     - bei Angabe eines Verzeichnisses werden alle YAML und JSON-Dateien in diesem Verzeichnis gelesen
+    |       - die Dateien sollten durchnummeriert werden mit "(1)", "(2)" etc. am Ende des Dateinamens
+    |       - Die Daten der Dateien werden zusammengefügt ihrer Nummerierung folgend
+    |       - Die Daten der Gruppe (Name, Mitglieder, Titel, Verfasser, Einleitung) werden immer von der LETZTEN Datei übernommen, da davon ausgegangen wird, dass diese die aktuellste ist (in den restlichen können die Werte also einfach fehlen).
     |  2. Ausgabe-Verzeichnis der Geschichte (Optional, Default: 'out')
     |  3. Ausgabe-Verzeichnis der verschiedenen Übersichten (Optional, Default: 'out')
 """.trimMargin()
@@ -26,16 +31,17 @@ suspend fun main(args: Array<String>) {
             val beispielDatei = File(DEFAULT_OUT, beispielRessource)
             ClassLoader.getSystemClassLoader().getResourceAsStream(beispielRessource)
                 .copyTo(beispielDatei.outputStream())
-            convert(beispielDatei, DEFAULT_OUT, DEFAULT_OUT)
+            convert(arrayOf(beispielDatei), DEFAULT_OUT, DEFAULT_OUT)
         } else {
-            val inputFileName = args[0]
-            val inputFile = File(inputFileName)
-            if (inputFile.isDirectory) {
-
+            val inputFile = File(args[0])
+            val inputFiles = if (inputFile.isDirectory) {
+                inputFile.listFiles { _, file -> file.endsWith("yaml") || file.endsWith("json") }
+            } else {
+                arrayOf(inputFile)
             }
             val storyOutputDir = args.getOrElse(1) { DEFAULT_OUT }
             val statistikenOutputDir = args.getOrElse(2) { DEFAULT_OUT }
-            convert(inputFile, storyOutputDir, statistikenOutputDir)
+            convert(inputFiles, storyOutputDir, statistikenOutputDir)
         }
     }
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
@@ -46,30 +52,54 @@ suspend fun main(args: Array<String>) {
 
 @Suppress("DeferredResultUnused")
 private suspend fun convert(
-    inputFile: File,
+    inputFiles: Array<File>,
     storyOutputDir: String,
     statistikenOutputDir: String
 ) {
     coroutineScope {
-        val data = async { loadDataFile<GruppenDaten>(inputFile) }
+
+        val gruppenDaten = ladeGruppenDaten(inputFiles)
+
+        val nameBasis = inputFiles[0].nameWithoutExtension.substringBefore('(').trim()
 
         async {
-            val htmlFile = File(storyOutputDir, inputFile.nameWithoutExtension + ".html")
-            val html = StoryHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(generateHtml(html, data.await().gruppe))
+            val htmlFile = File(storyOutputDir, nameBasis + ".html")
+            val html = StoryHtmlFileWriter().writeData(gruppenDaten)
+            htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
         async {
-            val htmlFile = File(statistikenOutputDir, inputFile.nameWithoutExtension + "_APs.html")
-            val html = ApsHtmlFileWriter().writeData(data.await())
-            htmlFile.writeText(generateHtml(html, data.await().gruppe))
+            val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
+            val html = ApsHtmlFileWriter().writeData(gruppenDaten)
+            htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
         async {
-            val htmlChronik = File(statistikenOutputDir, inputFile.nameWithoutExtension + "_Chronik.html")
-            ChronikHtmlFileWriter(htmlChronik).writeData(data.await())
+            val htmlChronik = File(statistikenOutputDir, nameBasis + "_Chronik.html")
+            ChronikHtmlFileWriter(htmlChronik).writeData(gruppenDaten)
         }
     }
+}
+
+private suspend fun CoroutineScope.ladeGruppenDaten(inputFiles: Array<File>): GruppenDaten {
+    return inputFiles
+        .sorted()
+        .map {
+            async { loadDataFile<GruppenDaten>(it) }
+        }
+        .map { it.await() }
+        .reduce(::gruppenDatenZusammenfassen)
+}
+
+fun gruppenDatenZusammenfassen(gruppenDaten1: GruppenDaten, gruppenDaten2: GruppenDaten): GruppenDaten {
+    return GruppenDaten(
+        gruppenDaten2.gruppe,
+        gruppenDaten2.mitglieder,
+        gruppenDaten2.titel,
+        gruppenDaten2.verfasser,
+        gruppenDaten2.einleitung,
+        gruppenDaten1.abende + gruppenDaten2.abende
+    )
 }
 
 
@@ -97,10 +127,6 @@ fun generateHtml(body: String, gruppe: String) =
         .popover {
             max-width:600px;
         }
-
-        nav[data-toggle='toc'] .nav .nav {
-            display: block;
-          }
 
         .footer {
             color: rgba(255,255,255,.8);

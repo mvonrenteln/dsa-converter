@@ -30,12 +30,16 @@ inline fun <reified T> loadDataFile(file: File): T {
     }
 }
 
-inline fun <reified T> loadJsonFile(file: File): T {
-    return jsonMapper.readValue(file, T::class.java)
-}
+inline fun <reified T> loadJsonFile(file: File) = loadFile<T>(file, jsonMapper)
 
-inline fun <reified T> loadYamlFile(file: File): T {
-    return yamlMapper.readValue(file, T::class.java)
+inline fun <reified T> loadYamlFile(file: File) = loadFile<T>(file, yamlMapper)
+
+inline fun <reified T> loadFile(file: File, mapper: ObjectMapper): T {
+    return try {
+        mapper.readValue(file, T::class.java)
+    } catch (e: Exception) {
+        throw IllegalStateException("Datei $file konnte nicht gelesen werden!  ${e.message}", e)
+    }
 }
 
 fun writeYamlFile(data: Any, file: File) {
