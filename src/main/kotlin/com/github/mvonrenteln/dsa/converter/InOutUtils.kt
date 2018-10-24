@@ -6,7 +6,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import java.io.File
-import java.io.InputStream
 
 val yamlFactory = YAMLFactory()
     .enable(YAMLGenerator.Feature.MINIMIZE_QUOTES) //removes quotes from strings
@@ -19,24 +18,24 @@ val yamlMapper = ObjectMapper(yamlFactory).registerKotlinModule().setSerializati
 val jsonMapper = ObjectMapper().registerKotlinModule().setSerializationInclusion(NON_NULL)
 
 
-inline fun <reified T> loadDataFile(inputStream: InputStream, inputFileName: String): T {
-    return printMeasuredTimeAndReturnResult("Eingabe-Datei $inputFileName gelesen in %d ms.") {
-        if (inputFileName.toLowerCase().endsWith("yaml")) {
-            loadYamlFile(inputStream)
-        } else if (inputFileName.toLowerCase().endsWith("json")) {
-            loadJsonFile<T>(inputStream)
+inline fun <reified T> loadDataFile(file: File): T {
+    return printMeasuredTimeAndReturnResult("Eingabe-Datei ${file.name} gelesen in %d ms.") {
+        if (file.name.toLowerCase().endsWith("yaml")) {
+            loadYamlFile(file)
+        } else if (file.name.toLowerCase().endsWith("json")) {
+            loadJsonFile<T>(file)
         } else {
             throw IllegalArgumentException("Nur YAML oder JSON als Daten sind erlaubt!")
         }
     }
 }
 
-inline fun <reified T> loadJsonFile(path: InputStream): T {
-    return jsonMapper.readValue(path, T::class.java)
+inline fun <reified T> loadJsonFile(file: File): T {
+    return jsonMapper.readValue(file, T::class.java)
 }
 
-inline fun <reified T> loadYamlFile(path: InputStream): T {
-    return yamlMapper.readValue(path, T::class.java)
+inline fun <reified T> loadYamlFile(file: File): T {
+    return yamlMapper.readValue(file, T::class.java)
 }
 
 fun writeYamlFile(data: Any, file: File) {

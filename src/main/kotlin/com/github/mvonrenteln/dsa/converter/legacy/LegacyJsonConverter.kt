@@ -2,23 +2,21 @@ package com.github.mvonrenteln.dsa.converter.legacy
 
 import com.github.mvonrenteln.dsa.converter.*
 import java.io.File
-import java.io.InputStream
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
     val time = measureTimeMillis {
-        val inputFileName = args[0]
-        val input = File(inputFileName).inputStream()
+        val input = File(args[0])
         val outputDir = if (args.size > 1) args[1] else "out"
-        convert(inputFileName, input, File(outputDir))
+        convert(input, File(outputDir))
     }
     println("Gesamt-Konvertierung in $time ms abgeschlossen.")
 }
 
-private fun convert(inputFileName: String, inputStream: InputStream, outputDir: File) {
-    val altDaten = loadDataFile<LegacyGruppenDaten>(inputStream, inputFileName)
+private fun convert(inputFile: File, outputDir: File) {
+    val altDaten = loadDataFile<LegacyGruppenDaten>(inputFile)
 
     val neueDaten = GruppenDaten(gruppe = altDaten.gruppe, abende = altDaten.abende.map {
         Abend(
@@ -34,7 +32,7 @@ private fun convert(inputFileName: String, inputStream: InputStream, outputDir: 
         )
     })
 
-    writeYamlFile(neueDaten, File(outputDir, File(inputFileName).nameWithoutExtension + ".yaml"))
+    writeYamlFile(neueDaten, File(outputDir, inputFile.nameWithoutExtension + ".yaml"))
 }
 
 fun berechneSpieldauer(aps: List<AP>): Int {
