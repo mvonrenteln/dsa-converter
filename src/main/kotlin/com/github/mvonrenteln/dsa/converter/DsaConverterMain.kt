@@ -66,13 +66,13 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
-            val html = StoryHtmlFileWriter().writeData(gruppenDaten)
+            val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
             htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
-            val html = ApsHtmlFileWriter().writeData(gruppenDaten)
+            val html = ApsHtmlFileWriter().writeData(gruppenDaten, nscs)
             htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
@@ -138,6 +138,10 @@ fun generateHtml(body: String, gruppe: String) =
     <style type="text/css" class="init">
         .popover {
             max-width:600px;
+        }
+
+        .text-with-popover {
+
         }
 
         .footer {

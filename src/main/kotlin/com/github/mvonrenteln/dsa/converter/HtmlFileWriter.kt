@@ -9,16 +9,15 @@ abstract class HtmlFileWriter {
 
     private val kapitel = mutableMapOf<String, String>()
 
-    fun writeData(gruppenDaten: GruppenDaten): String {
+    fun writeData(gruppenDaten: GruppenDaten, nscs: List<Nsc>): String {
         val time = measureTimeMillis {
-            writeDataInternal(gruppenDaten)
+            writeDataInternal(gruppenDaten, nscs)
         }
         println("HTML geschrieben in $time ms.")
         return writer.toString()
     }
 
-
-    protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten)
+    protected abstract fun writeDataInternal(gruppenDaten: GruppenDaten, nscs: List<Nsc>)
 
     protected fun h1(titel: String, untertitel: String? = null) {
         val untertitelTag = if (untertitel != null) " <small>$untertitel</small>" else ""
@@ -88,11 +87,11 @@ abstract class HtmlFileWriter {
         zeile("</tr>")
     }
 
-    protected fun tabellenZelleMitTitel(inhalt: String, titel: String?): String {
-        return if (titel.isNullOrBlank())
+    protected fun popover(inhalt: String, popover: String?): String {
+        return if (popover.isNullOrBlank())
             inhalt
         else
-            """<div data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$titel">$inhalt</div>"""
+            """<abbr data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$popover">$inhalt</abbr>"""
     }
 
     protected fun String.toHtml(): String {

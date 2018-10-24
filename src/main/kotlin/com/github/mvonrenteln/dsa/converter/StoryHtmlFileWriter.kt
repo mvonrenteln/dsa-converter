@@ -7,7 +7,7 @@ class StoryHtmlFileWriter : HtmlFileWriter() {
     private var aktuellesDatum: String? = null
 
 
-    override fun writeDataInternal(gruppenDaten: GruppenDaten) {
+    override fun writeDataInternal(gruppenDaten: GruppenDaten, nscs: List<Nsc>) {
         h1("${gruppenDaten.titel} (${gruppenDaten.gruppe})", gruppenDaten.verfasser)
 
         textblock(gruppenDaten.einleitung)
@@ -34,9 +34,20 @@ class StoryHtmlFileWriter : HtmlFileWriter() {
                     h4(abschnitt.datum)
                 }
 
-                textblock(abschnitt.text)
+                textblock(ersetzeNscs(abschnitt.text, nscs))
             }
         }
+    }
+
+    private fun ersetzeNscs(text: String, nscs: List<Nsc>): String {
+        var neuerText = text
+        for (nsc in nscs) {
+            if (nsc.vorname != null) {
+
+                neuerText = neuerText.replace(nsc.vorname, popover(nsc.vorname, nsc.toString()))
+            }
+        }
+        return neuerText
     }
 
 }

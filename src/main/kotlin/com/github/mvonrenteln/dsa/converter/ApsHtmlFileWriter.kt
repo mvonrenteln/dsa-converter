@@ -2,7 +2,7 @@ package com.github.mvonrenteln.dsa.converter
 
 class ApsHtmlFileWriter : HtmlFileWriter() {
 
-    override fun writeDataInternal(gruppenDaten: GruppenDaten) {
+    override fun writeDataInternal(gruppenDaten: GruppenDaten, nscs: List<Nsc>) {
         val erlebnisse = berechneAps(gruppenDaten)
         h1("APs der ${erlebnisse.name}")
         zusammenfassung(erlebnisse)
@@ -59,7 +59,7 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
 
     private fun neuerAbend(abend: AbendAps) {
         tabellenZeile(
-            tabellenZelleMitTitel(abend.titel, abend.zusammenfassung),
+            popover(abend.titel, abend.zusammenfassung),
             abend.aps,
             abend.charakterreife,
             "${abend.spieldauer} Stunden"
