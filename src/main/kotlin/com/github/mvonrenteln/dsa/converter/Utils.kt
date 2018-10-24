@@ -29,7 +29,7 @@ fun String.onlyWordCharacters(): String {
         if (Character.isLetterOrDigit(ch)) {
             output.append(ch)
         } else if (Character.isWhitespace(ch)) {
-            output.append("-")
+            output.append('-')
         }
     }
 
