@@ -218,7 +218,10 @@ fun generateHtml(body: String, gruppe: String) =
 
     <script>
     ${'$'}(document).ready(function(){
-        ${'$'}('[data-toggle="popover"]').popover();
+        ${'$'}('[data-toggle="popover"]').popover({
+            container: 'body',
+            placement: 'auto'
+        })
     });
 
     ${'$'}('[data-spy="scroll"]').each(function () {
