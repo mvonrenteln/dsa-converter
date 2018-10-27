@@ -124,16 +124,15 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
 
 fun generateHtml(body: String, gruppe: String) =
     printMeasuredTimeAndReturnResult("Generieren der HTML-Seite aus dem Template in %d ms.") {
-        val context = VelocityContext()
-        context.put("gruppe", gruppe)
-        context.put("body", body)
-        context.put(
-            "jetzt",
-            LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
-        )
-        val ergebnis = StringWriter()
-        TEMPLATE.merge(context, ergebnis)
-        ergebnis.toString()
+        val context = VelocityContext().apply {
+            put("gruppe", gruppe)
+            put("body", body)
+            put(
+                "jetzt",
+                LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
+            )
+        }
+        StringWriter().use { TEMPLATE.merge(context, it) }.toString()
     }
 
 
