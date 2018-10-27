@@ -32,7 +32,8 @@ dependencies {
     
     compile 'com.vladsch.flexmark:flexmark:0.34.52'
     compile 'com.vladsch.flexmark:flexmark-ext-tables:0.34.52'
-    compile 'com.vladsch.flexmark:flexmark-ext-toc:0.34.52'
+
+    compile 'org.apache.velocity:velocity-engine-core:2.0'
 }
 
 jar {
