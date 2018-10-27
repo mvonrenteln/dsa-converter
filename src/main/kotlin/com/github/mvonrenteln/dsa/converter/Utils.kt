@@ -6,14 +6,23 @@ import kotlin.system.measureTimeMillis
 
 val logger = LoggerFactory.getLogger("dsa-converter")
 
+var sumTime = 0L
+
 inline fun <T> printMeasuredTimeAndReturnResult(aktion: String, block: () -> T): T {
     var returnValue: T? = null
     val time = measureTimeMillis {
         returnValue = block()
     }
-    val stringLength = 70 - aktion.length
+    val stringLength = 69 - aktion.length
     logger.debug(aktion + "$time ms".padStart(stringLength))
+    sumTime += time
     return returnValue!!
+}
+
+fun printSumTime() {
+    val aktion = "Summe der Einzelschritte ohne Corotines wären mindestens"
+
+    logger.debug(aktion + "[$sumTime ms]".padStart(70 - aktion.length))
 }
 
 fun String.removeRange(start: String, ende: String): String {

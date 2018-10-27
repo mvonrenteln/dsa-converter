@@ -46,7 +46,9 @@ suspend fun main(args: Array<String>) {
             val statistikenOutputDir = args.getOrElse(2) { DEFAULT_OUT }
             convert(inputFiles, storyOutputDir, statistikenOutputDir)
         }
+        printSumTime()
     }
+
     logger.debug("ENTER drücken zum Beenden.")
     readLine()
 
