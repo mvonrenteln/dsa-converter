@@ -3,12 +3,17 @@ package com.github.mvonrenteln.dsa.converter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import org.apache.velocity.Template
+import org.apache.velocity.VelocityContext
+import org.apache.velocity.app.Velocity
 import java.io.File
+import java.io.StringWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
 import kotlin.system.measureTimeMillis
+
 
 val parameterDescription = """Parameter:
     |  1. Name der Eingabe-Datei oder des Eingabe-Verzeichnisses,
@@ -58,6 +63,8 @@ private suspend fun convert(
 ) {
     coroutineScope {
 
+        val velocity = async { initVelocity() }
+
         val gruppenDaten = ladeGruppenDaten(inputFiles)
 
         val nscs = ladeNscs(inputFiles)
@@ -67,12 +74,14 @@ private suspend fun convert(
         async {
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
             val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
+            velocity.await()
             htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
             val html = ApsHtmlFileWriter().writeData(gruppenDaten, nscs)
+            velocity.await()
             htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
         }
 
@@ -116,15 +125,31 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
 }
 
 
-private val htmlTemplate = ClassLoader.getSystemClassLoader().getResourceAsStream("template.html").reader().readText()
+private fun initVelocity() =
+    printMeasuredTimeAndReturnResult("Velocity initialisiert in %d ms.") {
+        Velocity.init(Properties().apply {
+            resourceAsStream("velocity.properties").use { this.load(it) }
+        })
+    }
 
-fun generateHtml(body: String, gruppe: String) = htmlTemplate
-    .replace("{{gruppe}}", gruppe)
-    .replace("{{body}}", body)
-    .replace(
-        "{{jetzt}}",
-        LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
-    )
+private fun getTemplate(): Template {
+    initVelocity()
+    return Velocity.getTemplate("template.html")
+}
+
+fun generateHtml(body: String, gruppe: String) =
+    printMeasuredTimeAndReturnResult("Generieren der HTML-Seite aus dem Template in %d ms.") {
+        val context = VelocityContext()
+        context.put("gruppe", gruppe)
+        context.put("body", body)
+        context.put(
+            "jetzt",
+            LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
+        )
+        val ergebnis = StringWriter()
+        getTemplate().merge(context, ergebnis)
+        ergebnis.toString()
+    }
 
 
 
