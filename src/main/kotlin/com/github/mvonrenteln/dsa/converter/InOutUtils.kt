@@ -45,3 +45,5 @@ inline fun <reified T> loadFile(file: File, mapper: ObjectMapper): T {
 fun writeYamlFile(data: Any, file: File) {
     yamlMapper.writerWithDefaultPrettyPrinter().writeValue(file, data)
 }
+
+fun resourceAsStream(file: String) = ClassLoader.getSystemClassLoader().getResourceAsStream(file)
