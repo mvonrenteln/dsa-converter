@@ -3,9 +3,7 @@ package com.github.mvonrenteln.dsa.converter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import org.apache.velocity.Template
 import org.apache.velocity.VelocityContext
-import org.apache.velocity.app.Velocity
 import java.io.File
 import java.io.StringWriter
 import java.time.LocalDateTime
@@ -124,19 +122,6 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
         .flatMap { it.toList() }
 }
 
-
-private fun initVelocity() =
-    printMeasuredTimeAndReturnResult("Velocity initialisiert in %d ms.") {
-        Velocity.init(Properties().apply {
-            resourceAsStream("velocity.properties").use { this.load(it) }
-        })
-    }
-
-private fun getTemplate(): Template {
-    initVelocity()
-    return Velocity.getTemplate("template.html")
-}
-
 fun generateHtml(body: String, gruppe: String) =
     printMeasuredTimeAndReturnResult("Generieren der HTML-Seite aus dem Template in %d ms.") {
         val context = VelocityContext()
@@ -147,7 +132,7 @@ fun generateHtml(body: String, gruppe: String) =
             LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
         )
         val ergebnis = StringWriter()
-        getTemplate().merge(context, ergebnis)
+        TEMPLATE.merge(context, ergebnis)
         ergebnis.toString()
     }
 
