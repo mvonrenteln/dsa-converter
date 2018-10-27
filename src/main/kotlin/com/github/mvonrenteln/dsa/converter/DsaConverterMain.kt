@@ -5,7 +5,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.apache.velocity.VelocityContext
 import java.io.File
-import java.io.StringWriter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -73,14 +72,14 @@ private suspend fun convert(
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
             val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
+            generateHtml(htmlFile, html, gruppenDaten.gruppe)
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
             val html = ApsHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            htmlFile.writeText(generateHtml(html, gruppenDaten.gruppe))
+            generateHtml(htmlFile, html, gruppenDaten.gruppe)
         }
 
         async {
@@ -122,8 +121,8 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
         .flatMap { it.toList() }
 }
 
-fun generateHtml(body: String, gruppe: String) =
-    printMeasuredTimeAndReturnResult("Generieren der HTML-Seite aus dem Template in %d ms.") {
+fun generateHtml(htmlFile: File, body: String, gruppe: String) =
+    printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template in %d ms.") {
         val context = VelocityContext().apply {
             put("gruppe", gruppe)
             put("body", body)
@@ -132,7 +131,7 @@ fun generateHtml(body: String, gruppe: String) =
                 LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
             )
         }
-        StringWriter().use { TEMPLATE.merge(context, it) }.toString()
+        htmlFile.writer().use { TEMPLATE.merge(context, it) }
     }
 
 
