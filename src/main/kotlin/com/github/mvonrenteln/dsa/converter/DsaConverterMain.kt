@@ -72,14 +72,14 @@ private suspend fun convert(
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
             val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            generateHtml(htmlFile, html, gruppenDaten.gruppe)
+            generateHtml(htmlFile, html, gruppenDaten)
         }
 
         async {
             val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
             val html = ApsHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            generateHtml(htmlFile, html, gruppenDaten.gruppe)
+            generateHtml(htmlFile, html, gruppenDaten)
         }
 
         async {
@@ -121,10 +121,10 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
         .flatMap { it.toList() }
 }
 
-fun generateHtml(htmlFile: File, body: String, gruppe: String) =
+fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
     printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template in %d ms.") {
         val context = VelocityContext().apply {
-            put("gruppe", gruppe)
+            put("gruppenDaten", gruppenDaten)
             put("body", body)
             put(
                 "jetzt",
