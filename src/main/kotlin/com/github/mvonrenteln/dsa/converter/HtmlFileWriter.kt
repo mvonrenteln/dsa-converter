@@ -13,7 +13,7 @@ abstract class HtmlFileWriter {
         val time = measureTimeMillis {
             writeDataInternal(gruppenDaten, nscs)
         }
-        println("HTML geschrieben in $time ms.")
+        logger.debug("HTML geschrieben in $time ms.")
         return writer.toString()
     }
 
@@ -102,7 +102,7 @@ abstract class HtmlFileWriter {
     private fun Any?.oderLeer() = this?.toString() ?: LEER
 
 
-    companion object {
+    companion object KLogging {
         private val BR = "\n"
         private val LEERZEILE = "$BR$BR"
         val LEER = "&nbsp;"

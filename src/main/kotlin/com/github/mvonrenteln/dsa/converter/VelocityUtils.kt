@@ -4,7 +4,7 @@ import org.apache.velocity.app.Velocity
 import java.util.*
 
 fun initVelocity() =
-    printMeasuredTimeAndReturnResult("Velocity initialisiert in %d ms.") {
+    printMeasuredTimeAndReturnResult("Velocity initialisiert in {} ms.") {
         Velocity.init(Properties().apply {
             resourceAsStream("velocity.properties").use { this.load(it) }
         })

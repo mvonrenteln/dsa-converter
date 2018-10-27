@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" strict="true" name="XMLConfig">
+
+    <Appenders>
+        <Console name="ANDERE">
+            <Layout type="PatternLayout" pattern="%d{HH:mm:ss,SSS} WARN VELOCITY - %m%n"/>
+            <RegexFilter regex=".*cannot be resolved.*" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+
+        <Console name="VELOCITY">
+            <Layout type="PatternLayout" pattern="%d{HH:mm:ss,SSS} %-5p VELOCITY %c{1} - %m%n"/>
+        </Console>
+
+        <Console name="EIGENE">
+            <Layout type="PatternLayout" pattern="%d{HH:mm:ss,SSS} %-80m [%.8t]%n"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+
+        <logger name="dsa-converter" level="debug" additivity="false">
+            <AppenderRef ref="EIGENE"/>
+        </logger>
+
+        <logger name="rendering" level="debug" additivity="false">
+            <AppenderRef ref="VELOCITY"/>
+        </logger>
+
+        <Root level="debug">
+            <AppenderRef ref="ANDERE"/>
+        </Root>
+    </Loggers>
+
+</Configuration>

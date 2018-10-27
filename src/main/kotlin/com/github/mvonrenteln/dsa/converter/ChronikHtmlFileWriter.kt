@@ -34,7 +34,7 @@ class ChronikHtmlFileWriter(val htmlFile: File) {
 
             htmlFile.writeText(erstelleChronik(gruppenDaten.gruppe, daten))
         }
-        println("In ${htmlFile.name} geschrieben in $time ms.")
+        logger.debug("In ${htmlFile.name} geschrieben in $time ms.")
     }
 
     fun datum(abschnitt: Abschnitt) =

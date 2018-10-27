@@ -12,7 +12,7 @@ fun main(args: Array<String>) {
         val outputDir = if (args.size > 1) args[1] else "out"
         convert(input, File(outputDir))
     }
-    println("Gesamt-Konvertierung in $time ms abgeschlossen.")
+    logger.debug("Gesamt-Konvertierung in $time ms abgeschlossen.")
 }
 
 private fun convert(inputFile: File, outputDir: File) {

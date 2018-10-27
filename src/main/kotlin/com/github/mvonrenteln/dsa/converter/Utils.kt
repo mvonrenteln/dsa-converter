@@ -1,13 +1,17 @@
 package com.github.mvonrenteln.dsa.converter
 
+import org.slf4j.LoggerFactory
 import kotlin.system.measureTimeMillis
+
+
+val logger = LoggerFactory.getLogger("dsa-converter")
 
 fun <T> printMeasuredTimeAndReturnResult(message: String, block: () -> T): T {
     var returnValue: T? = null
     val time = measureTimeMillis {
         returnValue = block()
     }
-    println(message.format(time))
+    logger.debug(message, time)
     return returnValue!!
 }
 

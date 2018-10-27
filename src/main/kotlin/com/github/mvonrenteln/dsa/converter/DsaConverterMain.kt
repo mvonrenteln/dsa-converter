@@ -27,8 +27,8 @@ private val DEFAULT_OUT = "out"
 suspend fun main(args: Array<String>) {
     val time = measureTimeMillis {
         if (args.isEmpty()) {
-            println(parameterDescription)
-            println("Gebe Beispiel-Datei aus.")
+            logger.info(parameterDescription)
+            logger.info("Gebe Beispiel-Datei aus.")
             val beispielRessource = "beispiel.yaml"
             val beispielDatei = File(DEFAULT_OUT, beispielRessource)
             ClassLoader.getSystemClassLoader().getResourceAsStream(beispielRessource)
@@ -37,8 +37,10 @@ suspend fun main(args: Array<String>) {
         } else {
             val inputFile = File(args[0])
             val inputFiles = if (inputFile.isDirectory) {
+                logger.info("Lese Dateien in Verzeichnis $inputFile.")
                 inputFile.listFiles { _, file -> file.endsWith("yaml") || file.endsWith("json") }
             } else {
+                logger.info("Lese Datei $inputFile.")
                 arrayOf(inputFile)
             }
             val storyOutputDir = args.getOrElse(1) { DEFAULT_OUT }
@@ -46,8 +48,10 @@ suspend fun main(args: Array<String>) {
             convert(inputFiles, storyOutputDir, statistikenOutputDir)
         }
     }
-    println("Gesamt-Konvertierung in $time ms abgeschlossen.")
-    println("ENTER drücken zum Beenden.")
+    logger.debug(
+        """Gesamt-Konvertierung in $time ms abgeschlossen.
+        |ENTER drücken zum Beenden.""".trimMargin()
+    )
     readLine()
 
 }
@@ -122,7 +126,7 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
 }
 
 fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
-    printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template in %d ms.") {
+    printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template in {} ms.") {
         val context = VelocityContext().apply {
             put("gruppenDaten", gruppenDaten)
             put("body", body)

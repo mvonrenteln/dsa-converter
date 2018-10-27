@@ -19,7 +19,7 @@ val jsonMapper = ObjectMapper().registerKotlinModule().setSerializationInclusion
 
 
 inline fun <reified T> loadDataFile(file: File): T {
-    return printMeasuredTimeAndReturnResult("Eingabe-Datei ${file.name} gelesen in %d ms.") {
+    return printMeasuredTimeAndReturnResult("Eingabe-Datei ${file.name} gelesen in {} ms.") {
         if (file.name.toLowerCase().endsWith("yaml")) {
             loadYamlFile(file)
         } else if (file.name.toLowerCase().endsWith("json")) {
