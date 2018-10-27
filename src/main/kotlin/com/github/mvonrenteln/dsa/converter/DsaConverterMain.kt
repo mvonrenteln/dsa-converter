@@ -9,7 +9,6 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import java.util.*
-import kotlin.system.measureTimeMillis
 
 
 val parameterDescription = """Parameter:
@@ -25,7 +24,7 @@ val parameterDescription = """Parameter:
 private val DEFAULT_OUT = "out"
 
 suspend fun main(args: Array<String>) {
-    val time = measureTimeMillis {
+    printMeasuredTimeAndReturnResult("Gesamt-Konvertierung") {
         if (args.isEmpty()) {
             logger.info(parameterDescription)
             logger.info("Gebe Beispiel-Datei aus.")
@@ -48,10 +47,7 @@ suspend fun main(args: Array<String>) {
             convert(inputFiles, storyOutputDir, statistikenOutputDir)
         }
     }
-    logger.debug(
-        """Gesamt-Konvertierung in $time ms abgeschlossen.
-        |ENTER drücken zum Beenden.""".trimMargin()
-    )
+    logger.debug("ENTER drücken zum Beenden.")
     readLine()
 
 }
@@ -126,7 +122,7 @@ private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> 
 }
 
 fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
-    printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template in {} ms.") {
+    printMeasuredTimeAndReturnResult("Generieren von ${htmlFile.name} aus dem Template") {
         val context = VelocityContext().apply {
             put("gruppenDaten", gruppenDaten)
             put("body", body)

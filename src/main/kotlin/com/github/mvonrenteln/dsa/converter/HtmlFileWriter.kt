@@ -1,7 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.StringWriter
-import kotlin.system.measureTimeMillis
 
 abstract class HtmlFileWriter {
 
@@ -10,10 +9,9 @@ abstract class HtmlFileWriter {
     private val kapitel = mutableMapOf<String, String>()
 
     fun writeData(gruppenDaten: GruppenDaten, nscs: List<Nsc>): String {
-        val time = measureTimeMillis {
+        printMeasuredTimeAndReturnResult("HTML geschrieben") {
             writeDataInternal(gruppenDaten, nscs)
         }
-        logger.debug("HTML geschrieben in $time ms.")
         return writer.toString()
     }
 

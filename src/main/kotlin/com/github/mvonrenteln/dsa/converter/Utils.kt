@@ -6,12 +6,13 @@ import kotlin.system.measureTimeMillis
 
 val logger = LoggerFactory.getLogger("dsa-converter")
 
-fun <T> printMeasuredTimeAndReturnResult(message: String, block: () -> T): T {
+inline fun <T> printMeasuredTimeAndReturnResult(aktion: String, block: () -> T): T {
     var returnValue: T? = null
     val time = measureTimeMillis {
         returnValue = block()
     }
-    logger.debug(message, time)
+    val stringLength = 70 - aktion.length
+    logger.debug(aktion + "$time ms".padStart(stringLength))
     return returnValue!!
 }
 

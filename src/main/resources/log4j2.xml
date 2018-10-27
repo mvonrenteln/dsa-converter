@@ -12,7 +12,7 @@
         </Console>
 
         <Console name="EIGENE">
-            <Layout type="PatternLayout" pattern="%d{HH:mm:ss,SSS} %-80m [%.8t]%n"/>
+            <Layout type="PatternLayout" pattern="%d{HH:mm:ss,SSS}   %-70m [%.8t]%n"/>
         </Console>
     </Appenders>
 

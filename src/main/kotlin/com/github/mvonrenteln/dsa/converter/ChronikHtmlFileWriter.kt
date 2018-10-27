@@ -1,7 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.File
-import kotlin.system.measureTimeMillis
 
 class ChronikHtmlFileWriter(val htmlFile: File) {
 
@@ -13,7 +12,7 @@ class ChronikHtmlFileWriter(val htmlFile: File) {
 
 
     fun writeData(gruppenDaten: GruppenDaten) {
-        val time = measureTimeMillis {
+        printMeasuredTimeAndReturnResult("In ${htmlFile.name} geschrieben") {
             val htmlData = mutableListOf<List<String>>()
             gruppenDaten.abende.forEach { abend ->
                 abend.abschnitte.forEach { abschnitt ->
@@ -34,7 +33,6 @@ class ChronikHtmlFileWriter(val htmlFile: File) {
 
             htmlFile.writeText(erstelleChronik(gruppenDaten.gruppe, daten))
         }
-        logger.debug("In ${htmlFile.name} geschrieben in $time ms.")
     }
 
     fun datum(abschnitt: Abschnitt) =
