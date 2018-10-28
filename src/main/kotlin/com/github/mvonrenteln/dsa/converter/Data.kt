@@ -55,7 +55,7 @@ data class Nsc(
     val tsatag: String?,
     val sprache: String?,
     val charakter: String?,
-    val aussprüche: List<String>?,
+    val zitate: List<String>?,
     val beziehungZuHelden: String?,
     val motivation: String?,
     val vergangenheit: String?,

@@ -44,21 +44,32 @@
                 <b class="mr-1">Beziehung zu den Helden</b> $nsc.beziehungZuHelden
             #end
         </p>
-        <p class="card-text">
-            #if ($nsc.gruppen)
+
+        #if ($nsc.zitate)
+            <div class="card-text">
+                #foreach( $zitat in $nsc.zitate)
+                    <blockquote class="blockquote text-right">
+                        <p class="mb-0">$zitat</p>
+                    </blockquote>
+                #end
+            </div>
+        #end
+
+        #if ($nsc.gruppen)
+            <p class="card-text">
                 #foreach( $gruppe in $nsc.gruppen)
                     <span class="badge badge-pill badge-secondary">$gruppe</span>
                 #end
-            #end
-        </p>
+            </p>
+        #end
 
-        <p class="card-text text-right">
-            #if ($nsc.tags)
+        #if ($nsc.tags)
+            <p class="card-text text-right">
                 #foreach( $tag in $nsc.tags)
                     <span class="badge badge-pill badge-primary">$tag</span>
                 #end
-            #end
-        </p>
+            </p>
+        #end
     </div>
 </div>
 #end
