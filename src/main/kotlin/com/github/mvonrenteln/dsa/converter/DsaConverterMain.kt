@@ -70,11 +70,15 @@ private suspend fun convert(
 
         val nameBasis = inputFiles[0].nameWithoutExtension.substringBefore('(').trim()
 
+        val nscCards = async {
+            NscsFileWriter().writeData(gruppenDaten, nscs)
+        }
+
         async {
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
             val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            generateHtml(htmlFile, html, gruppenDaten)
+            generateHtml(htmlFile, html + nscCards.await(), gruppenDaten)
         }
 
         async {
@@ -86,9 +90,8 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(statistikenOutputDir, nameBasis + "_NSCs.html")
-            val html = NscsFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
-            generateHtml(htmlFile, html, gruppenDaten)
+            generateHtml(htmlFile, nscCards.await(), gruppenDaten)
         }
 
         async {

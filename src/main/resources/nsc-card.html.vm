@@ -1,7 +1,7 @@
 #* @vtlvariable name="nscs" type="List<com.github.mvonrenteln.dsa.converter.Nsc>" *#
 #* @vtlvariable name="nsc" type="com.github.mvonrenteln.dsa.converter.Nsc" *#
 #foreach( $nsc in $nscs )
-<div class="card popover-body col-md-4">
+<div id="$nsc.id" class="card popover-body col-md-4">
     #if ($nsc.bild)
         <img class="img-thumbnail mx-auto d-block" src="$nsc.bild" alt="">
     #end

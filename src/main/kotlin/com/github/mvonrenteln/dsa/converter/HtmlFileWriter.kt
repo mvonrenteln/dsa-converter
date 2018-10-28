@@ -11,7 +11,9 @@ abstract class HtmlFileWriter {
 
     fun writeData(gruppenDaten: GruppenDaten, nscs: List<Nsc>): String {
         printMeasuredTimeAndReturnResult("HTML geschrieben") {
-            writeDataInternal(gruppenDaten, nscs)
+            section {
+                writeDataInternal(gruppenDaten, nscs)
+            }
         }
         return writer.toString()
     }
@@ -63,6 +65,12 @@ abstract class HtmlFileWriter {
         writer.append(LEERZEILE)
     }
 
+    protected fun section(block: () -> Unit) {
+        zeile("""<section>""")
+        block()
+        zeile("</section>")
+    }
+
     protected fun tabelle(vararg spalten: Any?, block: () -> Unit) {
         zeile("""<table class="table table-striped table-hover">""")
         zeile("<tr>")
@@ -86,11 +94,14 @@ abstract class HtmlFileWriter {
         zeile("</tr>")
     }
 
-    protected fun popover(inhalt: String, popover: String?): String {
-        return if (popover.isNullOrBlank())
+    protected fun popover(inhalt: String, popover: String? = null, id: String? = null): String {
+        return if (popover.isNullOrBlank() && id.isNullOrBlank())
             inhalt
-        else
+        else if (!popover.isNullOrBlank()) {
             """<abbr data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$popover">$inhalt</abbr>"""
+        } else {
+            """<abbr data-toggle="popover" data-trigger="hover" title="$inhalt" data-popover-content="#$id">$inhalt</abbr>"""
+        }
     }
 
     protected fun String.toHtml(): String {

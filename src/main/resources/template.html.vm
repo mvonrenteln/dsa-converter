@@ -22,7 +22,7 @@
 
     <style type="text/css" class="init">
         .popover {
-            max-width:600px;
+            max-width: 35em;
         }
 
         .footer {
@@ -129,9 +129,17 @@
 
 <script>
     $(document).ready(function(){
-        $('[data-toggle="popover"]').popover({
-            container: 'body',
-            placement: 'auto'
+        $("[data-toggle=popover]").popover({
+            html: true,
+            content: function () {
+                var content = $(this).attr("data-popover-content");
+                if (content != null) {
+                    return $(content).html();
+
+                } else {
+                    return $(this).attr("data-content");
+                }
+            }
         })
     });
 

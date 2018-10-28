@@ -67,5 +67,7 @@ data class Nsc(
     fun berechneAlter() = alter ?: 1018-tsatag!!.substringBefore("BF").trim().toInt()
 
     fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+" BF"
+
+    val id = (vorname + "-" + name).replace(' ', '-')
 }
 
