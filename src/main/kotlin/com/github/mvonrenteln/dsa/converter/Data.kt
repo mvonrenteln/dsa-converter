@@ -68,6 +68,8 @@ data class Nsc(
 
     fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+" BF"
 
-    val id = (vorname + "-" + name).replace(' ', '-')
+    fun ganzerName(): String = (vorname.orEmpty() + " " + name.orEmpty()).trim()
+
+    val id = ganzerName().replace(' ', '-')
 }
 

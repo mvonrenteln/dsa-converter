@@ -94,13 +94,16 @@ abstract class HtmlFileWriter {
         zeile("</tr>")
     }
 
-    protected fun popover(inhalt: String, popover: String? = null, id: String? = null): String {
+    protected fun popover(inhalt: String, popover: String? = null, id: String? = null, titel: String = inhalt): String {
         return if (popover.isNullOrBlank() && id.isNullOrBlank())
             inhalt
-        else if (!popover.isNullOrBlank()) {
-            """<abbr data-toggle="popover" data-trigger="hover" title="$inhalt" data-content="$popover">$inhalt</abbr>"""
-        } else {
-            """<abbr data-toggle="popover" data-trigger="hover" title="$inhalt" data-popover-content="#$id">$inhalt</abbr>"""
+        else {
+            val dataField = if (!popover.isNullOrBlank()) {
+                """data-content="$popover" """
+            } else {
+                """data-popover-content="#$id" """
+            }
+            """<abbr data-toggle="popover" data-trigger="hover" title="$titel" $dataField>$inhalt</abbr>"""
         }
     }
 

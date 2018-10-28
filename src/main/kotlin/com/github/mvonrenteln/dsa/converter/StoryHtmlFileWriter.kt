@@ -44,7 +44,10 @@ class StoryHtmlFileWriter : HtmlFileWriter() {
         for (nsc in nscs) {
             if (nsc.vorname != null) {
 
-                neuerText = neuerText.replace(nsc.vorname, popover(inhalt = nsc.vorname, id = nsc.id))
+                neuerText = neuerText.replace(
+                    nsc.vorname,
+                    popover(inhalt = nsc.vorname, titel = nsc.ganzerName(), id = nsc.id)
+                )
             }
         }
         return neuerText

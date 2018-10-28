@@ -59,7 +59,7 @@ class ApsHtmlFileWriter : HtmlFileWriter() {
 
     private fun neuerAbend(abend: AbendAps) {
         tabellenZeile(
-            popover(abend.titel, abend.zusammenfassung),
+            popover(inhalt = abend.titel, popover = abend.zusammenfassung),
             abend.aps,
             abend.charakterreife,
             "${abend.spieldauer} Stunden"
