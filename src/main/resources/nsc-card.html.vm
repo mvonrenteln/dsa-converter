@@ -3,7 +3,9 @@
 #foreach( $nsc in $nscs )
 <div id="$nsc.id" class="card popover-body col-md-4">
     #if ($nsc.bild)
-        <img class="img-thumbnail mx-auto d-block" src="$nsc.bild" alt="">
+        <div style="height: 18em;">
+            <img class="img-thumbnail mx-auto d-block mh-100" src="$nsc.bild" alt="">
+        </div>
     #end
     <div class="card-body">
         <h4 class="card-title">
