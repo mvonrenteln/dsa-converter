@@ -46,6 +46,7 @@ data class Nsc(
     val titel: String?,
     val profession: String?,
     val spezies: String?,
+    val geschlecht: String?,
     val gruppen: List<String>?,
     val wohnort: String?,
     val position: String?,
@@ -63,8 +64,8 @@ data class Nsc(
     val wikiLink: String?,
     val bild: String?
 ) {
-    fun berechneAlter() = alter ?: 1018-tsatag!!.substringBefore(" ").toInt()
+    fun berechneAlter() = alter ?: 1018-tsatag!!.substringBefore("BF").trim().toInt()
 
-    fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+"BF"
+    fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+" BF"
 }
 
