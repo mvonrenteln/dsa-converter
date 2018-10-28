@@ -62,5 +62,9 @@ data class Nsc(
     val tags: List<String>?,
     val wikiLink: String?,
     val bild: String?
-)
+) {
+    fun berechneAlter() = alter ?: 1018-tsatag!!.substringBefore(" ").toInt()
+
+    fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+"BF"
+}
 

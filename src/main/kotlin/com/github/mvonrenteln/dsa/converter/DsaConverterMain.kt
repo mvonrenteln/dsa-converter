@@ -85,6 +85,13 @@ private suspend fun convert(
         }
 
         async {
+            val htmlFile = File(statistikenOutputDir, nameBasis + "_NSCs.html")
+            val html = NscsFileWriter().writeData(gruppenDaten, nscs)
+            velocity.await()
+            generateHtml(htmlFile, html, gruppenDaten)
+        }
+
+        async {
             val htmlChronik = File(statistikenOutputDir, nameBasis + "_Chronik.html")
             ChronikHtmlFileWriter(htmlChronik).writeData(gruppenDaten)
         }
@@ -132,6 +139,8 @@ fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
                 "jetzt",
                 LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
             )
+            put("containerTyp", "container-fluid")
+            put("sidebar", true)
         }
         htmlFile.writer().use { TEMPLATE.merge(context, it) }
     }

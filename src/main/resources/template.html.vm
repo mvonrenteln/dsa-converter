@@ -1,3 +1,4 @@
+#* @vtlvariable name="gruppenDaten" type="com.github.mvonrenteln.dsa.converter.GruppenDaten" *#
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -29,10 +30,8 @@
         }
 
         body {
-          line-height: 1.4; // Base line height
-          color: #333
+            line-height: 1.4; // Base line height color: #333
         }
-
 
         h1, h2, h3, h4, h5, h6 {
             font-family: "Open Sans","DejaVu Sans",sans-serif;
@@ -64,10 +63,14 @@
 
         p {
             font-family: 'Spectral', serif;
-            font-size: 1.25em; // Base font size
-            margin-bottom: 1.75rem; // Base vertical spacing: (1.4 * 1.25) = 1.75
-          }
+            font-size: 1.25em; // Base font size margin-bottom: 1.75rem; // Base vertical spacing: (1.4 * 1.25) = 1.75
+        }
 
+        .card-text {
+            font-family: "Open Sans", "DejaVu Sans", sans-serif;
+            font-size: 1em;
+            margin-bottom: 1rem;
+        }
 
 
     </style>
@@ -81,17 +84,23 @@
 
 </head>
 <body data-spy="scroll" data-target="#toc">
-<div class="container-fluid">
+<div class="$containerTyp">
+
 
     <div class="row">
-        <!-- sidebar, which will move to the top on a small screen -->
-        <div class="col-sm-3 col-md-2 col-lg-2">
-            <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 20px;"></nav>
-        </div>
-        <!-- main content area -->
-        <div class="col-sm-9 col-md-10 col-lg-7">
+
+        #if ($sidebar == true)
+            <!-- sidebar, which will move to the top on a small screen -->
+            <div class="col-sm-3 col-md-2">
+                <nav id="toc" data-toggle="toc" class="sticky-top" style="top: 20px;"></nav>
+            </div>
+            <!-- main content area -->
+            <div class="col-sm-9 col-md-10">
+                $body
+            </div>
+        #else
             $body
-        </div>
+        #end
     </div>
 </div>
 
@@ -125,7 +134,7 @@
     });
 
     $('[data-spy="scroll"]').each(function () {
-      var $spy = $(this).scrollspy('refresh')
+        var $spy = $(this).scrollspy('refresh')
     })
 
 </script>

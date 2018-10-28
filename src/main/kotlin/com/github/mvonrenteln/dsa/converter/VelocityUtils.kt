@@ -10,4 +10,6 @@ fun initVelocity() =
         })
     }
 
-val TEMPLATE by lazy { Velocity.getTemplate("template.html") }
+val TEMPLATE by lazy { Velocity.getTemplate("template.html.vm") }
+
+val NSC_TEMPLATE by lazy { Velocity.getTemplate("nsc-card.html.vm") }

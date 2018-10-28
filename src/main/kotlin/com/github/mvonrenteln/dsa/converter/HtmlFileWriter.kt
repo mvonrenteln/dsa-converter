@@ -1,10 +1,11 @@
 package com.github.mvonrenteln.dsa.converter
 
 import java.io.StringWriter
+import java.io.Writer
 
 abstract class HtmlFileWriter {
 
-    private var writer = StringWriter()
+    protected var writer: Writer = StringWriter()
 
     private val kapitel = mutableMapOf<String, String>()
 

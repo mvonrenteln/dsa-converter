@@ -1,0 +1,64 @@
+#* @vtlvariable name="nscs" type="List<com.github.mvonrenteln.dsa.converter.Nsc>" *#
+#* @vtlvariable name="nsc" type="com.github.mvonrenteln.dsa.converter.Nsc" *#
+#foreach( $nsc in $nscs )
+<div class="card popover-body col-md-4">
+    #if ($nsc.bild)
+        <img class="img-thumbnail mx-auto d-block" src="$nsc.bild" alt="">
+    #end
+    <div class="card-body">
+        <h4 class="card-title">
+            #if ($nsc.wikiLink)
+                <a href="$nsc.wikiLink">$nsc.vorname $nsc.name</a>
+            #else
+                $nsc.vorname $nsc.name
+            #end
+        </h4>
+        #if ($nsc.titel)
+            <h6 class="card-subtitle mb-2 text-muted">$nsc.titel</h6>
+        #end
+        <p class="card-text text-right">&#10057; $nsc.berechneTsatag() ($nsc.berechneAlter() Jahre)</p>
+        <p class="card-text">
+            #if ($nsc.position)
+                $nsc.position
+            #end
+            #if ($nsc.wohnort)
+                in $nsc.wohnort
+            #end
+            #if ($nsc.profession)
+                und $nsc.profession
+            #end
+        </p>
+        <p class="card-text">
+            #if ($nsc.aussehen)
+                <b class="mr-1">Aussehen</b> $nsc.aussehen<br>
+            #end
+            #if ($nsc.sprache)
+                <b class="mr-1">Sprache</b> $nsc.sprache
+            #end
+        </p>
+        <p class="card-text">
+            #if ($nsc.charakter)
+                <b class="mr-1">Charakter</b> $nsc.charakter<br>
+            #end
+            #if ($nsc.beziehungZuHelden)
+                <b class="mr-1">Beziehung zu den Helden</b> $nsc.beziehungZuHelden
+            #end
+        </p>
+        <p class="card-text">
+            #if ($nsc.gruppen)
+                #foreach( $gruppe in $nsc.gruppen)
+                    <span class="badge badge-pill badge-secondary">$gruppe</span>
+                #end
+            #end
+        </p>
+
+        <p class="card-text text-right">
+            #if ($nsc.tags)
+                #foreach( $tag in $nsc.tags)
+                    <span class="badge badge-pill badge-primary">$tag</span>
+                #end
+            #end
+        </p>
+    </div>
+</div>
+#end
