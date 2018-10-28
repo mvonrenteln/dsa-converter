@@ -3,14 +3,14 @@ package com.github.mvonrenteln.dsa.converter
 import java.io.StringWriter
 import java.io.Writer
 
-abstract class HtmlFileWriter {
+abstract class HtmlFileWriter(val typ: String) {
 
     protected var writer: Writer = StringWriter()
 
     private val kapitel = mutableMapOf<String, String>()
 
     fun writeData(gruppenDaten: GruppenDaten, nscs: List<Nsc>): String {
-        printMeasuredTimeAndReturnResult("HTML geschrieben") {
+        printMeasuredTimeAndReturnResult("$typ-HTML geschrieben") {
             section {
                 writeDataInternal(gruppenDaten, nscs)
             }

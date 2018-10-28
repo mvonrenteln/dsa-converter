@@ -2,7 +2,7 @@ package com.github.mvonrenteln.dsa.converter
 
 import org.apache.velocity.VelocityContext
 
-class NscsFileWriter : HtmlFileWriter() {
+class NscsFileWriter : HtmlFileWriter("NSCs") {
 
     override fun writeDataInternal(gruppenDaten: GruppenDaten, nscs: List<Nsc>) {
         val context = VelocityContext().apply {
