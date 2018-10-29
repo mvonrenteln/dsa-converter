@@ -1,5 +1,9 @@
-package com.github.mvonrenteln.dsa.converter
+package com.github.mvonrenteln.dsa.converter.json
 
+import com.github.mvonrenteln.dsa.converter.GruppenDaten
+import com.github.mvonrenteln.dsa.converter.loadDataFile
+import com.github.mvonrenteln.dsa.converter.printMeasuredTimeAndReturnResult
+import com.github.mvonrenteln.dsa.converter.writeYamlFile
 import java.io.File
 
 fun main(args: Array<String>) {

@@ -11,7 +11,8 @@ import java.time.format.FormatStyle
 import java.util.*
 
 
-val parameterDescription = """Parameter:
+val parameterDescription = """
+    |Parameter:
     |  1. Name der Eingabe-Datei oder des Eingabe-Verzeichnisses,
     |     - bei Angabe eines Verzeichnisses werden alle YAML und JSON-Dateien in diesem Verzeichnis gelesen
     |       - die Dateien sollten durchnummeriert werden mit "(1)", "(2)" etc. am Ende des Dateinamens
@@ -19,11 +20,19 @@ val parameterDescription = """Parameter:
     |       - Die Daten der Gruppe (Name, Mitglieder, Titel, Verfasser, Einleitung) werden immer von der LETZTEN Datei übernommen, da davon ausgegangen wird, dass diese die aktuellste ist (in den restlichen können die Werte also einfach fehlen).
     |  2. Ausgabe-Verzeichnis der Geschichte (Optional, Default: 'out')
     |  3. Ausgabe-Verzeichnis der verschiedenen Übersichten (Optional, Default: 'out')
+    |
 """.trimMargin()
 
 private val DEFAULT_OUT = "out"
 
 suspend fun main(args: Array<String>) {
+    internalMain(args)
+    logger.debug("ENTER drücken zum Beenden.")
+    readLine()
+
+}
+
+suspend fun internalMain(args: Array<String>) {
     printMeasuredTimeAndReturnResult("Gesamt-Konvertierung") {
         if (args.isEmpty()) {
             logger.info(parameterDescription)
@@ -48,10 +57,6 @@ suspend fun main(args: Array<String>) {
         }
         printSumTime()
     }
-
-    logger.debug("ENTER drücken zum Beenden.")
-    readLine()
-
 }
 
 @Suppress("DeferredResultUnused")
