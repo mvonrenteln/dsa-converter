@@ -2,7 +2,7 @@ package com.github.mvonrenteln.dsa.converter
 
 data class GruppenDaten(
     val gruppe: String,
-    val mitglieder: List<Held>? = null,
+    val mitglieder: List<Held>? = emptyList(),
     val titel: String? = null,
     val verfasser: String? = null,
     val einleitung: String? = null,
@@ -20,7 +20,8 @@ data class Abend(
     val abschnitte: List<Abschnitt>,
     val aps: List<AP>,
     val zitat: String?,
-    val daten: String?
+    val daten: String?,
+    val tags: List<String>? = emptyList()
 )
 
 data class AP(val aps: Int, val beschreibung: String)
@@ -30,12 +31,13 @@ data class Abschnitt(
     val kapitel: String? = null,
     val ort: String,
     val abenteuer: String? = null,
-    val gruppen: List<String>? = null,
-    val ausrüstung: List<String>? = null,
-    val personen: List<String>? = null,
+    val gruppen: List<String>? = emptyList(),
+    val ausrüstung: List<String>? = emptyList(),
+    val personen: List<String>? = emptyList(),
     val text: String,
     val zusammenfassung: String? = null,
-    val effekte: List<Effekt>? = null
+    val effekte: List<Effekt>? = emptyList(),
+    val tags: List<String>? = emptyList()
 )
 
 data class Effekt(val auswirkung: String, val held: String, val wirktBis: String)

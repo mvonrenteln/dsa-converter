@@ -44,3 +44,6 @@ abende:
   kampagne: Die Sieben Gezeichneten
   spieldauer: 2 # Stunden
   titel: -< 30.05.2018 >- # Titel des Abends - Kapitelüberschrift im späteren Text
+  tags:
+  - Kampf
+  - Hinterhalt
