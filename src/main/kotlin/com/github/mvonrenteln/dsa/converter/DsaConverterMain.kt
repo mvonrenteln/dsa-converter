@@ -18,8 +18,8 @@ val parameterDescription = """
     |       - die Dateien sollten durchnummeriert werden mit "(1)", "(2)" etc. am Ende des Dateinamens
     |       - Die Daten der Dateien werden zusammengefügt ihrer Nummerierung folgend
     |       - Die Daten der Gruppe (Name, Mitglieder, Titel, Verfasser, Einleitung) werden immer von der LETZTEN Datei übernommen, da davon ausgegangen wird, dass diese die aktuellste ist (in den restlichen können die Werte also einfach fehlen).
-    |  2. Ausgabe-Verzeichnis der Geschichte (Optional, Default: 'out')
-    |  3. Ausgabe-Verzeichnis der verschiedenen Übersichten (Optional, Default: 'out')
+    |  2. Ausgabe-Verzeichnis der Geschichte (Optional, Default: './out')
+    |  3. Ausgabe-Verzeichnis der verschiedenen Übersichten (Optional, Default: './out')
     |
 """.trimMargin()
 
@@ -34,27 +34,29 @@ suspend fun main(args: Array<String>) {
 
 suspend fun internalMain(args: Array<String>) {
     printMeasuredTimeAndReturnResult("Gesamt-Konvertierung") {
-        if (args.isEmpty()) {
+        val storyOutputDir = File(args.getOrElse(1) { DEFAULT_OUT }).apply { mkdirs() }
+        val statistikenOutputDir = File(args.getOrElse(2) { DEFAULT_OUT }).apply { mkdirs() }
+
+        val inputFiles = if (args.isEmpty()) {
             logger.info(parameterDescription)
             logger.info("Gebe Beispiel-Datei aus.")
             val beispielRessource = "beispiel.yaml"
-            val beispielDatei = File(DEFAULT_OUT, beispielRessource)
+            val beispielDatei = File(storyOutputDir, beispielRessource)
             ClassLoader.getSystemClassLoader().getResourceAsStream(beispielRessource)
                 .copyTo(beispielDatei.outputStream())
-            convert(arrayOf(beispielDatei), DEFAULT_OUT, DEFAULT_OUT)
+            arrayOf(beispielDatei)
         } else {
             val inputFile = File(args[0])
-            val inputFiles = if (inputFile.isDirectory) {
+            if (inputFile.isDirectory) {
                 logger.info("Lese Dateien in Verzeichnis $inputFile.")
                 inputFile.listFiles { _, file -> file.endsWith("yaml") || file.endsWith("json") }
             } else {
                 logger.info("Lese Datei $inputFile.")
                 arrayOf(inputFile)
             }
-            val storyOutputDir = args.getOrElse(1) { DEFAULT_OUT }
-            val statistikenOutputDir = args.getOrElse(2) { DEFAULT_OUT }
-            convert(inputFiles, storyOutputDir, statistikenOutputDir)
         }
+
+        convert(inputFiles, storyOutputDir, statistikenOutputDir)
         printSumTime()
     }
 }
@@ -62,10 +64,13 @@ suspend fun internalMain(args: Array<String>) {
 @Suppress("DeferredResultUnused")
 private suspend fun convert(
     inputFiles: Array<File>,
-    storyOutputDir: String,
-    statistikenOutputDir: String
+    storyOutputDir: File,
+    statistikenOutputDir: File
 ) {
     coroutineScope {
+
+        logger.info("Story-Ausgabe-Verzeichnis: " + storyOutputDir.absolutePath)
+        logger.info("Ausgabe-Verzeichnis für den Rest: " + storyOutputDir.absolutePath)
 
         val velocity = async { initVelocity() }
 
