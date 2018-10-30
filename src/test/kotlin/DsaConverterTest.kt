@@ -1,6 +1,6 @@
 import com.github.mvonrenteln.dsa.converter.internalMain
-import jdk.nashorn.internal.ir.annotations.Ignore
 import kotlinx.coroutines.runBlocking
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class DsaConverterTest {
@@ -16,7 +16,7 @@ class DsaConverterTest {
      * Test in IDE starten mit VM-Options "-DinputFile=..."
      */
     @Test
-    @Ignore
+    @Disabled
     fun manuellerTest() {
         val inputFile = System.getProperty("inputFile")
         runBlocking {
