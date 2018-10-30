@@ -120,6 +120,7 @@ private suspend fun CoroutineScope.ladeGruppenDaten(inputFiles: Array<File>): Gr
             async { loadDataFile<GruppenDaten>(it) }
         }
         .map { it.await() }
+        .map { passeSystemInAbendenAn(it) }
         .reduce { gruppe1, gruppe2 ->
             GruppenDaten(
                 gruppe2.gruppe,
@@ -127,9 +128,27 @@ private suspend fun CoroutineScope.ladeGruppenDaten(inputFiles: Array<File>): Gr
                 gruppe2.titel,
                 gruppe2.verfasser,
                 gruppe2.einleitung,
-                gruppe1.abende + gruppe2.abende
+                gruppe1.abende + gruppe2.abende,
+                gruppe2.system
             )
         }
+}
+
+private fun passeSystemInAbendenAn(gruppe: GruppenDaten): GruppenDaten {
+    return if (gruppe.system == RpgSystem.UNDEFINIERT) {
+        // nichts übergeordnetes definiert, es bleibt alles wie es ist
+        gruppe
+    } else {
+        gruppe.copy(abende = gruppe.abende.map {
+            if (it.system == RpgSystem.UNDEFINIERT) {
+                // system ist im Abend nicht definiert, wir setzen ihn auf den globalen Wert
+                it.copy(system = gruppe.system)
+            } else {
+                // der Wert ist gesetzt und wird nicht geändert
+                it
+            }
+        })
+    }
 }
 
 

@@ -1,13 +1,19 @@
 package com.github.mvonrenteln.dsa.converter
 
+
 data class GruppenDaten(
     val gruppe: String,
     val mitglieder: List<Held>? = emptyList(),
     val titel: String? = null,
     val verfasser: String? = null,
     val einleitung: String? = null,
-    val abende: List<Abend>
+    val abende: List<Abend>,
+    val system: RpgSystem? = RpgSystem.UNDEFINIERT
 )
+
+enum class RpgSystem {
+    DSA4, DSA5, UNDEFINIERT
+}
 
 data class Held(val name: String, val profession: String)
 
@@ -21,7 +27,8 @@ data class Abend(
     val aps: List<AP>,
     val zitat: String?,
     val daten: String?,
-    val tags: List<String>? = emptyList()
+    val tags: List<String>? = emptyList(),
+    val system: RpgSystem? = RpgSystem.UNDEFINIERT
 )
 
 data class AP(val aps: Int, val beschreibung: String)

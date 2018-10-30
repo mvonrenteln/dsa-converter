@@ -16,6 +16,7 @@ einleitung: |- # (optional)
   NUR WENIGE SAHEN RECHTZEITIG JENE DUNKELHEIT AUFZIEHEN, WELCHE SICH GLEICH EINER ERSTICKENDEN WOLKE NACH UND NACH ÜBER GANZ AVENTURIEN LEGEN SOLLTE.
   DIES SIND DIE TATEN JENER HELDEN, WELCHE VIEL SPÄTER _DIE GEZEICHNETEN_ GENANNT WERDEN WÜRDEN. +
   HÖRE STAUNEND UND LERNE VON IHNEN.
+system: DSA5 # kann DSA4 oder DSA5 sein (optional), setzt dann alle Abende in dieser Datei, wo system nicht gesetzt wird auf diesen Wert
 abende:
 - abenteuer: Pforte des Grauens
   abschnitte:
@@ -47,3 +48,4 @@ abende:
   tags:
   - Kampf
   - Hinterhalt
+  #system: DSA4 # (s.o., optional) einkommentieren, um für diesen Abend den Standard der Datei zu überschreiben
