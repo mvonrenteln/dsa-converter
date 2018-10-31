@@ -86,7 +86,7 @@ private suspend fun convert(
 
         async {
             val htmlFile = File(storyOutputDir, nameBasis + ".html")
-            val html = StoryHtmlFileWriter().writeData(gruppenDaten, nscs)
+            val html = ErlebnisseHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
             generateHtml(htmlFile, html + nscCards.await(), gruppenDaten)
         }

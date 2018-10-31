@@ -1,6 +1,6 @@
 package com.github.mvonrenteln.dsa.converter
 
-class StoryHtmlFileWriter : HtmlFileWriter("Story") {
+class ErlebnisseHtmlFileWriter : HtmlFileWriter("Story") {
 
     private var aktuellesAbenteuer = ""
 
