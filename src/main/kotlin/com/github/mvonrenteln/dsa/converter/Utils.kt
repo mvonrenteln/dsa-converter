@@ -49,3 +49,18 @@ fun String.onlyWordCharacters(): String {
 
     return output.toString()
 }
+
+fun <T> MutableMap<T, Int>.addiereWerte(valuesToAdd: Map<T, Int>) =
+    valuesToAdd.forEach { this.addiereWert(it.key, it.value) }
+
+
+fun <T> MutableMap<T, Int>.addiereWert(key: T, amountToAdd: Int) {
+    val newValue = this.getOrDefault(key, 0) + amountToAdd
+    this[key] = newValue
+}
+
+
+/**
+ * "0"-sichere Division
+ */
+fun Int.div0Safe(other: Int) = if (this == 0) 0 else this / other
