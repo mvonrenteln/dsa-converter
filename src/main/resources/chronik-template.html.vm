@@ -1,0 +1,36 @@
+<section>
+    <h1>Chronik der $gruppenDaten.gruppe</h1>
+
+    <table id="datatable" class="display" style="width:98%">
+
+    </table>
+
+</section>
+
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
+<script type="text/javascript" language="javascript" class="init">
+    $(document).ready(function () {
+        $('#datatable').DataTable({
+                    "ordering": false,
+                    "language": {
+                        "url": "https://cdn.datatables.net/plug-ins/1.10.18/i18n/German.json"
+                    },
+                    "scrollY": "600px",
+                    "scrollCollapse": true,
+                    "paging": false,
+                    "info": false,
+                    "data": $chronikDaten,
+                    columns: [
+                        {title: "Datum"},
+                        {title: "Ort"},
+                        {title: "Personen"},
+                        {title: "Zusammenfassung"},
+                        {title: "Abenteuer"},
+                        {title: "Kapitel"},
+                        {title: "Abend"}
+                    ]
+
+                }
+        );
+    });
+</script>

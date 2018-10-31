@@ -13,3 +13,5 @@ fun initVelocity() =
 val TEMPLATE by lazy { Velocity.getTemplate("template.html.vm") }
 
 val NSC_TEMPLATE by lazy { Velocity.getTemplate("nsc-card.html.vm") }
+
+val CHRONIK_TEMPLATE by lazy { Velocity.getTemplate("chronik-template.html.vm") }

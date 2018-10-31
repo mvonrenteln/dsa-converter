@@ -13,10 +13,10 @@ class ChronikHtmlFileWriter(val htmlFile: File) {
 
     fun writeData(gruppenDaten: GruppenDaten) {
         printMeasuredTimeAndReturnResult("In ${htmlFile.name} geschrieben") {
-            val htmlData = mutableListOf<List<String>>()
+            val chronikDaten = mutableListOf<List<String>>()
             gruppenDaten.abende.forEach { abend ->
                 abend.abschnitte.forEach { abschnitt ->
-                    htmlData.add(
+                    chronikDaten.add(
                         listOf(
                             datum(abschnitt),
                             abschnitt.ort,
@@ -29,9 +29,9 @@ class ChronikHtmlFileWriter(val htmlFile: File) {
                     )
                 }
             }
-            val daten = jsonMapper.writeValueAsString(htmlData)
+            val daten = jsonMapper.writeValueAsString(chronikDaten)
 
-            htmlFile.writeText(erstelleChronik(gruppenDaten.gruppe, daten))
+            htmlFile.writeText(erstelleChronik(gruppenDaten, daten))
         }
     }
 
