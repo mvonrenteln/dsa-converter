@@ -70,7 +70,7 @@ private suspend fun convert(
     coroutineScope {
 
         logger.info("Story-Ausgabe-Verzeichnis: " + storyOutputDir.absolutePath)
-        logger.info("Ausgabe-Verzeichnis für den Rest: " + storyOutputDir.absolutePath)
+        logger.info("Ausgabe-Verzeichnis für den Rest: " + statistikenOutputDir.absolutePath)
 
         val velocity = async { initVelocity() }
 

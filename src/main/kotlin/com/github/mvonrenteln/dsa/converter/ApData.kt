@@ -4,7 +4,7 @@ import kotlin.math.roundToInt
 
 class Erlebnisse(gruppenName: String) : Abenteuer(gruppenName) {
 
-    val abenteuer: MutableList<Abenteuer> = mutableListOf()
+    val abenteuer = mutableListOf<Abenteuer>()
 
     fun abenteuerHinzufuegen(abenteuer: Abenteuer) {
         if (abenteuer != Abenteuer.LEER) {
