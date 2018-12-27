@@ -73,9 +73,11 @@ data class Nsc(
     val wikiLink: String?,
     val bild: String?
 ) {
-    fun berechneAlter() = alter ?: 1018-tsatag!!.substringBefore("BF").trim().toInt()
+    fun berechneAlter() = alter ?: 1018-tsatagAlsZahl()!!
 
     fun berechneTsatag() = tsatag ?: (1018 - alter!!.toInt()).toString()+" BF"
+
+    fun tsatagAlsZahl() = tsatag?.substringBefore("BF")?.trim()?.toInt()
 
     fun ganzerName(): String = (vorname.orEmpty() + " " + name.orEmpty()).trim()
 
