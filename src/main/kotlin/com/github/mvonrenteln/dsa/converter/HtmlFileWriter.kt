@@ -3,7 +3,7 @@ package com.github.mvonrenteln.dsa.converter
 import java.io.StringWriter
 import java.io.Writer
 
-abstract class HtmlFileWriter(val typ: String) {
+abstract class HtmlFileWriter(private val typ: String) {
 
     protected var writer: Writer = StringWriter()
 
@@ -43,12 +43,12 @@ abstract class HtmlFileWriter(val typ: String) {
         if (kapitel.containsKey(id)) {
             id += Math.random().toString().substring(2..5)
         }
-        kapitel.put(id, titel)
+        kapitel[id] = titel
 
         return id
     }
 
-    protected fun zeile(text: String?) {
+    private fun zeile(text: String?) {
 
         if (text != null) {
             writer.append("$text$BR")
@@ -61,16 +61,17 @@ abstract class HtmlFileWriter(val typ: String) {
         }
     }
 
-    protected fun leerzeile() {
+    private fun leerzeile() {
         writer.append(LEERZEILE)
     }
 
-    protected fun section(block: () -> Unit) {
+    private fun section(block: () -> Unit) {
         zeile("""<section>""")
         block()
         zeile("</section>")
     }
 
+    @Suppress("SameParameterValue")
     protected fun tabelle(vararg spalten: Any?, block: () -> Unit) {
         zeile("""<table class="table table-striped table-hover">""")
         zeile("<tr>")
@@ -107,7 +108,8 @@ abstract class HtmlFileWriter(val typ: String) {
         }
     }
 
-    protected fun String.toHtml(): String {
+    @Suppress("SameParameterValue")
+    private fun String.toHtml(): String {
         val document = PARSER.parse(this)
         return RENDERER.render(document).replace("+\n", "<BR/>")
     }
@@ -116,8 +118,8 @@ abstract class HtmlFileWriter(val typ: String) {
 
 
     companion object KLogging {
-        private val BR = "\n"
-        private val LEERZEILE = "$BR$BR"
-        val LEER = "&nbsp;"
+        private const val BR = "\n"
+        private const val LEERZEILE = "$BR$BR"
+        const val LEER = "&nbsp;"
     }
 }
