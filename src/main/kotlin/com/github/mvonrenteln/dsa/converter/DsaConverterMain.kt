@@ -1,6 +1,5 @@
 package com.github.mvonrenteln.dsa.converter
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import org.apache.velocity.VelocityContext
@@ -23,7 +22,7 @@ val parameterDescription = """
     |
 """.trimMargin()
 
-private val DEFAULT_OUT = "out"
+private const val DEFAULT_OUT = "out"
 
 suspend fun main(args: Array<String>) {
     internalMain(args)
@@ -38,13 +37,7 @@ suspend fun internalMain(args: Array<String>) {
         val statistikenOutputDir = File(args.getOrElse(2) { DEFAULT_OUT }).apply { mkdirs() }
 
         val inputFiles = if (args.isEmpty()) {
-            logger.info(parameterDescription)
-            logger.info("Gebe Beispiel-Datei aus.")
-            val beispielRessource = "beispiel.yaml"
-            val beispielDatei = File(storyOutputDir, beispielRessource)
-            ClassLoader.getSystemClassLoader().getResourceAsStream(beispielRessource)
-                .copyTo(beispielDatei.outputStream())
-            arrayOf(beispielDatei)
+            beispielDateiSchreiben(storyOutputDir)
         } else {
             val inputFile = File(args[0])
             if (inputFile.isDirectory) {
@@ -59,6 +52,15 @@ suspend fun internalMain(args: Array<String>) {
         convert(inputFiles, storyOutputDir, statistikenOutputDir)
         printSumTime()
     }
+}
+
+private fun beispielDateiSchreiben(storyOutputDir: File): Array<File> {
+    logger.info(parameterDescription)
+    logger.info("Gebe Beispiel-Datei aus.")
+    val beispielRessource = "beispiel.yaml"
+    val beispielDatei = File(storyOutputDir, beispielRessource)
+    resourceAsStream(beispielRessource).copyTo(beispielDatei.outputStream())
+    return arrayOf(beispielDatei)
 }
 
 @Suppress("DeferredResultUnused")
@@ -85,53 +87,55 @@ private suspend fun convert(
         }
 
         async {
-            val htmlFile = File(storyOutputDir, nameBasis + ".html")
+            val htmlFile = File(storyOutputDir, "$nameBasis.html")
             val html = ErlebnisseHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
             generateHtml(htmlFile, html + nscCards.await(), gruppenDaten)
         }
 
         async {
-            val htmlFile = File(statistikenOutputDir, nameBasis + "_APs.html")
+            val htmlFile = File(statistikenOutputDir, "${nameBasis}_APs.html")
             val html = ApsHtmlFileWriter().writeData(gruppenDaten, nscs)
             velocity.await()
             generateHtml(htmlFile, html, gruppenDaten)
         }
 
         async {
-            val htmlFile = File(statistikenOutputDir, nameBasis + "_NSCs.html")
+            val htmlFile = File(statistikenOutputDir, "${nameBasis}_NSCs.html")
             velocity.await()
             generateHtml(htmlFile, nscCards.await(), gruppenDaten)
         }
 
         async {
-            val htmlChronik = File(statistikenOutputDir, nameBasis + "_Chronik.html")
+            val htmlChronik = File(statistikenOutputDir, "${nameBasis}_Chronik.html")
             ChronikHtmlFileWriter(htmlChronik).writeData(gruppenDaten)
         }
     }
 }
 
 
-private suspend fun CoroutineScope.ladeGruppenDaten(inputFiles: Array<File>): GruppenDaten {
-    return inputFiles
-        .sorted()
-        .filter { !it.name.contains("NSC") }
-        .map {
-            async { loadDataFile<GruppenDaten>(it) }
-        }
-        .map { it.await() }
-        .map { passeSystemInAbendenAn(it) }
-        .reduce { gruppe1, gruppe2 ->
-            GruppenDaten(
-                gruppe2.gruppe,
-                gruppe2.mitglieder,
-                gruppe2.titel,
-                gruppe2.verfasser,
-                gruppe2.einleitung,
-                gruppe1.abende + gruppe2.abende,
-                gruppe2.system
-            )
-        }
+private suspend fun ladeGruppenDaten(inputFiles: Array<File>): GruppenDaten {
+    return coroutineScope {
+        inputFiles
+            .sorted()
+            .filter { !it.name.contains("NSC") }
+            .map {
+                async { loadDataFile<GruppenDaten>(it) }
+            }
+            .map { it.await() }
+            .map { passeSystemInAbendenAn(it) }
+            .reduce { gruppe1, gruppe2 ->
+                GruppenDaten(
+                    gruppe2.gruppe,
+                    gruppe2.mitglieder,
+                    gruppe2.titel,
+                    gruppe2.verfasser,
+                    gruppe2.einleitung,
+                    gruppe1.abende + gruppe2.abende,
+                    gruppe2.system
+                )
+            }
+    }
 }
 
 private fun passeSystemInAbendenAn(gruppe: GruppenDaten): GruppenDaten {
@@ -152,14 +156,16 @@ private fun passeSystemInAbendenAn(gruppe: GruppenDaten): GruppenDaten {
 }
 
 
-private suspend fun CoroutineScope.ladeNscs(inputFiles: Array<File>): List<Nsc> {
-    return inputFiles
-        .filter { it.name.contains("NSC") }
-        .map {
-            async { loadDataFile<Array<Nsc>>(it) }
-        }
-        .map { it.await() }
-        .flatMap { it.toList() }
+private suspend fun ladeNscs(inputFiles: Array<File>): List<Nsc> {
+    return coroutineScope {
+        inputFiles
+            .filter { it.name.contains("NSC") }
+            .map {
+                async { loadDataFile<Array<Nsc>>(it) }
+            }
+            .map { it.await() }
+            .flatMap { it.toList() }
+    }
 }
 
 fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
@@ -169,7 +175,8 @@ fun generateHtml(htmlFile: File, body: String, gruppenDaten: GruppenDaten) =
             put("body", body)
             put(
                 "jetzt",
-                LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
+                LocalDateTime.now()
+                    .format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.GERMAN))
             )
             put("containerTyp", "container-fluid")
             put("sidebar", true)

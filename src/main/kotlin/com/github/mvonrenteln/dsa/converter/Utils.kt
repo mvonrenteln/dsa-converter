@@ -1,28 +1,33 @@
 package com.github.mvonrenteln.dsa.converter
 
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import kotlin.system.measureTimeMillis
 
 
-val logger = LoggerFactory.getLogger("dsa-converter")
+val logger: Logger = LoggerFactory.getLogger("dsa-converter")
 
 var sumTime = 0L
 
-inline fun <T> printMeasuredTimeAndReturnResult(aktion: String, block: () -> T): T {
+inline fun <T : Any> printMeasuredTimeAndReturnResult(aktion: String, block: () -> T): T {
     var returnValue: T? = null
     val time = measureTimeMillis {
         returnValue = block()
     }
-    val stringLength = 69 - aktion.length
-    logger.debug(aktion + "$time ms".padStart(stringLength))
-    sumTime += time
+    runSafe {
+        val aktionMessage = aktion.substring(0, 68)
+        val stringLength = 69 - aktionMessage.length
+        logger.debug(aktionMessage + "$time ms".padStart(stringLength))
+        sumTime += time
+    }
     return returnValue!!
 }
 
 fun printSumTime() {
-    val aktion = "Summe der Einzelschritte ohne Corotines wären mindestens"
-
-    logger.debug(aktion + "[$sumTime ms]".padStart(70 - aktion.length))
+    runSafe {
+        val aktion = "Summe der Einzelschritte ohne Corotines wären mindestens"
+        logger.debug(aktion + "[$sumTime ms]".padStart(70 - aktion.length))
+    }
 }
 
 fun String.removeRange(start: String, ende: String): String {
@@ -57,6 +62,15 @@ fun <T> MutableMap<T, Int>.addiereWerte(valuesToAdd: Map<T, Int>) =
 fun <T> MutableMap<T, Int>.addiereWert(key: T, amountToAdd: Int) {
     val newValue = this.getOrDefault(key, 0) + amountToAdd
     this[key] = newValue
+}
+
+fun <T> runSafe(block: () -> T): T? {
+    try {
+        return block()
+    } catch (e: Exception) {
+        logger.error(e.message, e)
+    }
+    return null
 }
 
 
