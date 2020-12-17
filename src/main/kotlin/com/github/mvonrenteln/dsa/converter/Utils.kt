@@ -2,6 +2,7 @@ package com.github.mvonrenteln.dsa.converter
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import kotlin.math.min
 import kotlin.system.measureTimeMillis
 
 
@@ -15,7 +16,7 @@ inline fun <T : Any> printMeasuredTimeAndReturnResult(aktion: String, block: () 
         returnValue = block()
     }
     runSafe {
-        val aktionMessage = aktion.substring(0, 68)
+        val aktionMessage = aktion.substring(0, min(aktion.length, 68))
         val stringLength = 69 - aktionMessage.length
         logger.debug(aktionMessage + "$time ms".padStart(stringLength))
         sumTime += time
